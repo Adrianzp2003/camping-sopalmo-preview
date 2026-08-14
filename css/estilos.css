@@ -695,6 +695,12 @@ html.aterrizado .entra {
   animation: entrar .85s var(--ease) forwards;
   animation-delay: calc(620ms + var(--paso, 0) * 130ms);
 }
+/* En modo espacio (vídeo hero), las letras ya están visibles cuando el bloque
+   se desvanece: entran mientras el vídeo las tapa, y el relevo no las anima. */
+html.espacio.aterrizado .entra {
+  animation: none;
+  opacity: 1;
+}
 /* La cabecera solo aparece: moverla descoloca la página. */
 html.aterrizado .nav.entra { animation-name: entrarSinMover; }
 /* El botón fijo entra desde abajo, que es de donde "vive". */
@@ -801,11 +807,7 @@ html.espacio #espacio { visibility: visible; }
    justo en el relevo. Solo después arranca una deriva muy suave hacia dentro,
    que continúa el movimiento del vuelo en vez de reiniciarlo. */
 html.espacio .hero-fondo { transform: none; filter: none; }
-html.espacio.aterrizado .hero-fondo {
-  transform: scale(1.06);
-  filter: none;
-  transition: transform 2600ms cubic-bezier(.16,.7,.2,1);
-}
+html.espacio.aterrizado .hero-fondo { transform: none; filter: none; }
 /* El velo negro de siempre estorba aquí: ya tapa `#espacio`. */
 html.espacio #velo { display: none; }
 
