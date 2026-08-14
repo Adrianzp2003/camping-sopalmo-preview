@@ -165,18 +165,19 @@
       var self = this;
 
       // El vídeo es el descenso IA invertido: termina en el camping, la misma
-      // escena que hay debajo. El fundido del bloque se dispara ANTES del
-      // `ended`, cuando por pantalla ya solo queda la foto: así ningún
-      // navegador llega a enseñar el fotograma negro que algunos pintan al
-      // agotarse un vídeo, y el relevo es imperceptible.
+      // escena que hay debajo. Se congela en el último frame ANTES del
+      // `ended` — si se le deja llegar al final, el navegador apaga el vídeo
+      // a negro justo cuando empieza a verse, y ese negro es el salto que se
+      // percibe entre el vídeo y la imagen. Congelado, el relevo es invisible.
       var disparado = false;
       var terminarUnaVez = function () {
         if (disparado) return;
         disparado = true;
+        try { if (!v.paused) v.pause(); } catch (e) {}
         self.terminar();
       };
       v.addEventListener('timeupdate', function () {
-        if (v.duration && v.duration - v.currentTime < 0.25) terminarUnaVez();
+        if (v.duration && v.duration - v.currentTime < 0.4) terminarUnaVez();
       });
       v.addEventListener('ended', terminarUnaVez, { once: true });
 
@@ -221,8 +222,11 @@
       if (!n) return;
       n.classList.add('saliendo');
       var v = this.video;
+      // El vídeo ya está pausado en el último frame (la aérea del camping).
+      // NO se vacía con removeAttribute('src') + load(): eso pinta el elemento
+      // de negro durante el fundido. Se quita el nodo del DOM y el navegador
+      // libera el recurso solo.
       setTimeout(function () {
-        if (v) { try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {} }
         if (n.parentNode) n.parentNode.removeChild(n);
         // OJO: la clase `espacio` del <html> NO se quita. La deriva de la
         // aérea sigue en marcha y quitarla cambiaría su regla a mitad de
