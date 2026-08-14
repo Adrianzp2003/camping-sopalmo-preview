@@ -1,0 +1,11 @@
+# Camping Sopalmo — robots.txt
+
+User-agent: *
+Allow: /
+
+# Nada que rastrear aquí: son ficheros internos, no contenido.
+Disallow: /includes/
+Disallow: /api/
+Disallow: /A/
+
+Sitemap: https://www.campingsopalmo.com/sitemap.xml

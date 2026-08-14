@@ -1,0 +1,14 @@
+# Nada de esta carpeta se sirve por web.
+# Sus ficheros se incluyen desde PHP; nadie debe pedirlos por URL.
+#
+# Va aquí dentro y no en el .htaccess de la raíz a propósito: así protege
+# aunque el sitio se monte en un subdirectorio (/nueva/, /staging/…), que
+# es donde una regla con ruta absoluta ^/includes/ deja de aplicar.
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>

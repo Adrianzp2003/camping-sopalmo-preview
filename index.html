@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es" class="precarga">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camping Sopalmo | Camping en Mojácar, junto al Cabo de Gata (Almería)</title>
+<meta name="description" content="Camping familiar de solo 30 parcelas en Sopalmo, Mojácar. Junto a las últimas playas sin construir de Almería y a un paso del Cabo de Gata. Parcelas, dos casas rurales y larga estancia de invierno.">
+<link rel="canonical" href="https://www.campingsopalmo.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Camping Sopalmo | Mojácar, Almería">
+<meta property="og:description" content="Solo 30 parcelas. Descanso y tranquilidad junto al Cabo de Gata.">
+<meta property="og:image" content="https://www.campingsopalmo.com/fotos/dron/aereo-camping-dorado-1280.webp">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta property="og:image:alt" content="Vista aérea del Camping Sopalmo al atardecer, entre la sierra de Mojácar">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Camping Sopalmo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#14150f">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="stylesheet" href="css/estilos.css?v=1786547733">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<!-- LCP: la aérea del camping. Se precarga la medida que va a usar cada pantalla. -->
+<!-- La lista tiene que ser IDÉNTICA a la del <img> de abajo, medida por medida.
+     Aquí faltaba la de 600 px: en pantallas estrechas el navegador precargaba
+     la de 900 y luego la <img> elegía la de 600, así que se descargaban las dos
+     y la precarga del LCP no servía de nada (el propio navegador lo avisaba en
+     consola). -->
+<link rel="preload" as="image" href="fotos/dron/aereo-camping-dorado-1280.webp"
+      imagesrcset="fotos/dron/aereo-camping-dorado-600.webp 600w, fotos/dron/aereo-camping-dorado-900.webp 900w, fotos/dron/aereo-camping-dorado-1280.webp 1280w, fotos/dron/aereo-camping-dorado-1920.webp 1920w"
+      imagesizes="100vw" fetchpriority="high">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Campground",
+  "name": "Camping Sopalmo",
+  "description": "Camping familiar de 30 parcelas en Sopalmo, Mojácar (Almería).",
+  "address": { "@type": "PostalAddress", "streetAddress": "Sopalmo", "addressLocality": "Mojácar",
+    "postalCode": "04638", "addressRegion": "Almería", "addressCountry": "ES" },
+  "geo": { "@type": "GeoCoordinates", "latitude": 37.0647459, "longitude": -1.8690642 },
+  "telephone": "+34950478413",
+  "email": "campingsopalmo@gmail.com",
+  "url": "https://www.campingsopalmo.com/",
+  "petsAllowed": true
+}
+</script>
+</head>
+<body>
+
+<!-- ============ ENTRADA · el aterrizaje ============ -->
+<!--
+  No hay pantalla de carga con contador. La entrada ES la portada: la foto
+  aérea empieza ampliada y oscurecida —como si el dron aún estuviera alto— y
+  desciende hasta su encuadre real mientras se aclara. Cuando "aterriza",
+  el nombre, el titular, los botones y el menú van entrando en cascada.
+
+  El velo solo tapa mientras la imagen no está decodificada, para que nadie
+  vea el salto. Si algo falla, un temporizador lo quita igual.
+-->
+<div id="velo" aria-hidden="true"></div>
+
+<!-- ============ DESCENSO DESDE EL ESPACIO ============ -->
+<!--
+  Un vídeo de 4 s generado con IA (Veo 3.1): descenso aéreo sobre el camping
+  que termina en la misma escena que sirve de portada, así que el relevo no
+  existe: es la misma imagen.
+
+  No lleva `src`: lo pone el JS, y solo si decide que toca verlo. Así, cuando
+  no toca (segunda visita, poco ancho de banda, "reducir movimiento"), no se
+  descarga ni un byte. Y nunca compite con el LCP, porque no se pide hasta que
+  la aérea del camping está decodificada.
+
+  Se salta con un clic, una tecla, la rueda o el botón.
+-->
+<div id="espacio" aria-hidden="true">
+  <!-- Sin `poster` a propósito. El vídeo empieza en negro sobre el espacio y el
+       bloque ya tiene ese mismo fondo, así que un póster no tapa nada. Y sí
+       costaba: al llevar `?v=` no reaprovechaba la copia en caché de la
+       `srcset` del hero y se descargaba otra vez, 323 KB de más. -->
+  <video id="esp-video" muted playsinline preload="none"
+         disablepictureinpicture disableremoteplayback
+         width="1920" height="1080"></video>
+
+  <p class="esp-credito">Imagen generada con IA · Camping Sopalmo · Mojácar</p>
+  <button type="button" class="esp-saltar" id="esp-saltar" tabindex="-1">Saltar intro</button>
+</div>
+
+<!-- ============ NAVEGACIÓN ============ -->
+<header class="nav entra" id="nav" style="--paso:6">
+  <div class="contenedor-ancho nav-interior">
+    <a href="#inicio" class="logo">Camping Sopalmo<span>Mojácar · Almería</span></a>
+    <nav>
+      <ul class="menu" id="menu">
+        <li><a href="#donde">Dónde estamos</a></li>
+        <li><a href="#alojamientos">Alojamientos</a></li>
+        <li><a href="#experiencia">La experiencia</a></li>
+        <li><a href="#tarifas">Tarifas</a></li>
+        <li><a href="#entorno">Entorno</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#reservar">Reservar</a></li>
+      </ul>
+    </nav>
+    <button class="hamburguesa" id="hamburguesa" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ 1. HERO CON VÍDEO (técnica nº 1) ============ -->
+<section class="hero" id="inicio">
+  <!--
+    El hero es el descenso REAL del dron (segundos 102-117,6 del vídeo del
+    camping). Termina exactamente en el fotograma que sirve de imagen fija,
+    así que al acabar se congela y no se nota el corte: el vídeo desaparece
+    sobre la misma imagen que hay debajo.
+
+    La imagen va primero en el DOM y es la que se precarga: es el LCP. El
+    vídeo se descarga después y solo en escritorio.
+  -->
+  <div class="hero-media">
+    <img id="hero-img" class="hero-fondo"
+         src="fotos/dron/aereo-camping-dorado-1280.webp"
+         srcset="fotos/dron/aereo-camping-dorado-600.webp 600w,
+                 fotos/dron/aereo-camping-dorado-900.webp 900w,
+                 fotos/dron/aereo-camping-dorado-1280.webp 1280w,
+                 fotos/dron/aereo-camping-dorado-1920.webp 1920w"
+         sizes="100vw" width="1920" height="1080" fetchpriority="high"
+         alt="Vista aérea del Camping Sopalmo al atardecer, con las parcelas entre el arbolado y la sierra de Mojácar alrededor">
+  </div>
+  <div class="contenedor-ancho">
+    <span class="antetitulo entra" style="--paso:1">Mojácar · Cabo de Gata · Almería</span>
+    <h1 class="titular-xxl entra" style="--paso:2">Su mayor encanto<br>es su tamaño</h1>
+    <p class="lema entra" style="--paso:3">
+      Solo 30 parcelas en dos alturas, junto a las últimas playas
+      sin construir de la costa de Almería.
+    </p>
+    <div class="botones entra" style="--paso:4">
+      <a href="#reservar" class="boton boton-primario">Reservar</a>
+      <a href="#alojamientos" class="boton boton-claro">Ver alojamientos</a>
+    </div>
+
+    <div class="hero-pie entra" style="--paso:5">
+      <div class="hero-datos">
+        <div class="hero-dato"><strong>30</strong><span>Parcelas</span></div>
+        <div class="hero-dato"><strong>2</strong><span>Casas rurales</span></div>
+        <div class="hero-dato"><strong>320</strong><span>Días de sol</span></div>
+        <div class="hero-dato"><strong>0,00 €</strong><span>Larga estancia / noche</span></div>
+      </div>
+      <a href="#alojamientos" class="baja-scroll"><span>Desliza</span><i></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DÓNDE ESTAMOS · vistas aéreas ============ -->
+<!--
+  Va justo después del hero a propósito: el visitante acaba de "aterrizar"
+  con el dron, y lo primero que se pregunta es dónde está eso. Estas tomas
+  lo responden mejor que cualquier párrafo.
+-->
+<section class="fondo-negro" id="donde" aria-labelledby="t-donde">
+  <div class="contenedor-ancho">
+    <div class="revelar" style="max-width:720px;margin-bottom:clamp(34px,4vw,60px)">
+      <span class="antetitulo">Dónde estamos</span>
+      <h2 class="titular-xl" id="t-donde">Entre la sierra<br>y el mar</h2>
+      <p class="entradilla">
+        Sopalmo es una pedanía de Mojácar metida en un valle, con la Sierra
+        Cabrera detrás y el Mediterráneo a cuatro kilómetros. El camping ocupa
+        una ladera con 30 parcelas en dos alturas, y
+        alrededor no hay nada más.
+      </p>
+    </div>
+
+    <div class="mosaico-aereo">
+            <figure class="mosaico-celda grande revelar">
+        <img src="fotos/dron/camping-cenital-dorado-600.webp" srcset="fotos/dron/camping-cenital-dorado-1920.webp 1920w, fotos/dron/camping-cenital-dorado-1280.webp 1280w, fotos/dron/camping-cenital-dorado-900.webp 900w, fotos/dron/camping-cenital-dorado-600.webp 600w"
+             sizes="(max-width:760px) 92vw, (max-width:1200px) 46vw, 31vw"
+             loading="lazy" decoding="async" alt="El Camping Sopalmo desde el aire al atardecer, con las parcelas entre el arbolado">
+      </figure>
+            <figure class="mosaico-celda  revelar">
+        <img src="fotos/dron/camping-parcelas-dorado-600.webp" srcset="fotos/dron/camping-parcelas-dorado-1920.webp 1920w, fotos/dron/camping-parcelas-dorado-1280.webp 1280w, fotos/dron/camping-parcelas-dorado-900.webp 900w, fotos/dron/camping-parcelas-dorado-600.webp 600w"
+             sizes="(max-width:760px) 92vw, (max-width:1200px) 46vw, 31vw"
+             loading="lazy" decoding="async" alt="Autocaravanas y tiendas en las parcelas del camping, vistas desde el aire">
+      </figure>
+            <figure class="mosaico-celda  revelar">
+        <img src="fotos/dron/camping-detalle-dorado-600.webp" srcset="fotos/dron/camping-detalle-dorado-1920.webp 1920w, fotos/dron/camping-detalle-dorado-1280.webp 1280w, fotos/dron/camping-detalle-dorado-900.webp 900w, fotos/dron/camping-detalle-dorado-600.webp 600w"
+             sizes="(max-width:760px) 92vw, (max-width:1200px) 46vw, 31vw"
+             loading="lazy" decoding="async" alt="Detalle de las parcelas y los caminos del camping a última hora de la tarde">
+      </figure>
+            <figure class="mosaico-celda  revelar">
+        <img src="fotos/dron/camping-valle-600.webp" srcset="fotos/dron/camping-valle-1920.webp 1920w, fotos/dron/camping-valle-1280.webp 1280w, fotos/dron/camping-valle-900.webp 900w, fotos/dron/camping-valle-600.webp 600w"
+             sizes="(max-width:760px) 92vw, (max-width:1200px) 46vw, 31vw"
+             loading="lazy" decoding="async" alt="El camping en su valle, con la Sierra Cabrera alrededor">
+      </figure>
+            <figure class="mosaico-celda  revelar">
+        <img src="fotos/dron/camping-carretera-600.webp" srcset="fotos/dron/camping-carretera-1920.webp 1920w, fotos/dron/camping-carretera-1280.webp 1280w, fotos/dron/camping-carretera-900.webp 900w, fotos/dron/camping-carretera-600.webp 600w"
+             sizes="(max-width:760px) 92vw, (max-width:1200px) 46vw, 31vw"
+             loading="lazy" decoding="async" alt="Acceso al camping desde la carretera de Sopalmo">
+      </figure>
+          </div>
+  </div>
+</section>
+
+<!-- ============ MARQUESINA (técnica nº 3) ============ -->
+<div class="marquesina" aria-hidden="true">
+  <div class="marquesina-pista">
+    <span>Cabo de Gata</span><span>Playas protegidas</span><span>Tranquilidad</span><span>Mojácar</span>
+    <span>Larga estancia</span><span>Casas rurales</span>
+    <span>Cabo de Gata</span><span>Playas protegidas</span><span>Tranquilidad</span><span>Mojácar</span>
+    <span>Larga estancia</span><span>Casas rurales</span>
+  </div>
+</div>
+
+<!-- ============ 2. ALOJAMIENTOS ============ -->
+<section id="alojamientos">
+  <div class="contenedor-ancho">
+    <div class="revelar" style="max-width:760px;margin-bottom:clamp(38px,5vw,70px)">
+      <span class="antetitulo">Alojamientos</span>
+      <h2 class="titular-xl">Parcela, casa rural<br>o toda la temporada</h2>
+      <p class="entradilla">
+        Tres formas de disfrutar del mismo sitio. Los precios salen de nuestro
+        sistema de reservas, así que son siempre los vigentes.
+      </p>
+    </div>
+
+    <div class="rejilla rejilla-3">
+      <article class="aloj revelar">
+        <div class="fondo"><img src="fotos/camping/camping-05-900.webp" srcset="fotos/camping/camping-05-900.webp 900w" sizes="(max-width:700px) 92vw, 31vw" alt="Parcela del Camping Sopalmo" loading="lazy" decoding="async"></div>
+        <div class="cuerpo">
+          <h3>Parcelas</h3>
+          <p class="cap">30 parcelas · 2 alturas</p>
+          <ul>
+            <li>Tienda, caravana o autocaravana</li>
+            <li>Toma de electricidad opcional</li>
+            <li>Un vehículo incluido</li>
+          </ul>
+          <div class="pie">
+            <span class="precio-desde">24,00 €<small>Parcela + 2 adultos</small></span>
+            <a href="#reservar" class="boton boton-claro" style="padding:11px 22px">Calcular</a>
+          </div>
+        </div>
+      </article>
+
+      <a class="aloj revelar d1 aloj-enlace" href="casa-cortijillo.html">
+        <div class="fondo"><img src="fotos/cortijillo/cortijillo-00-500.webp" srcset="fotos/cortijillo/cortijillo-00-900.webp 900w, fotos/cortijillo/cortijillo-00-500.webp 500w" sizes="(max-width:700px) 92vw, 31vw" alt="Terraza del Cortijillo con vistas a la sierra" loading="lazy" decoding="async"></div>
+        <div class="cuerpo">
+          <h3>El Cortijillo</h3>
+          <p class="cap">Hasta 5 personas</p>
+          <ul>
+            <li>Cama doble y dos individuales</li>
+            <li>Salón-cocina con chimenea</li>
+            <li>Aire acondicionado y terraza</li>
+          </ul>
+          <div class="pie">
+            <span class="precio-desde">0,00 €<small>Por noche</small></span>
+            <span class="boton boton-claro" style="padding:11px 22px">Ver la casa &rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="aloj revelar d2 aloj-enlace" href="casa-mirador.html">
+        <div class="fondo"><img src="fotos/mirador/mirador-1-500.webp" srcset="fotos/mirador/mirador-1-500.webp 500w" sizes="(max-width:700px) 92vw, 31vw" alt="Terraza del Mirador de la Rambla" loading="lazy" decoding="async"></div>
+        <div class="cuerpo">
+          <h3>El Mirador</h3>
+          <p class="cap">Hasta 5 personas</p>
+          <ul>
+            <li>Dormitorio amplio para cinco</li>
+            <li>Salón-cocina con chimenea</li>
+            <li>Aire acondicionado y terraza</li>
+          </ul>
+          <div class="pie">
+            <span class="precio-desde">0,00 €<small>Por noche</small></span>
+            <span class="boton boton-claro" style="padding:11px 22px">Ver la casa &rarr;</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <p class="entradilla revelar" style="margin-top:30px;font-size:.92rem">
+      No se puede fumar dentro de las casas. Mascotas bienvenidas en el camping y, bajo petición, en las casas.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 3. LA EXPERIENCIA — vídeo por scroll (técnica nº 7) ============ -->
+<div class="escena-scroll" id="experiencia" data-frames="28">
+  <div class="escena-fija">
+        <img id="sec-img" class="escena-foto visible"
+         src="fotos/secuencia/f01.webp" width="1100" height="619"
+         decoding="async" fetchpriority="low"
+         alt="El Camping Sopalmo visto desde el dron mientras se aleja sobre la sierra de Mojácar">
+    <noscript>
+      <img class="escena-foto visible" src="fotos/secuencia/f14.webp"
+           alt="Vista aérea del Camping Sopalmo y la sierra de Mojácar">
+    </noscript>
+
+    <!-- Indicador de precarga: sin esto el primer barrido va a tirones -->
+    <div class="sec-carga" id="sec-carga" aria-hidden="true"><i></i></div>
+
+    <div class="escena-texto">
+      <div class="escena-paso visible" data-paso="0">
+        <span class="antetitulo">La experiencia</span>
+        <h2 class="titular-xl">Aquí el tiempo<br>va más despacio</h2>
+      </div>
+      <div class="escena-paso" data-paso="1">
+        <h2 class="titular-xl">Silencio, sol<br>y poco más</h2>
+        <p class="entradilla" style="margin-inline:auto;color:rgba(255,253,249,.85)">
+          30 parcelas. Ni animación, ni megafonía, ni vecinos a dos metros.
+        </p>
+      </div>
+      <div class="escena-paso" data-paso="2">
+        <h2 class="titular-xl">Las últimas playas<br>sin construir</h2>
+        <p class="entradilla" style="margin-inline:auto;color:rgba(255,253,249,.85)">
+          Calas protegidas a un paso, y el Parque Natural de Cabo de Gata al lado.
+        </p>
+      </div>
+      <div class="escena-paso" data-paso="3">
+        <h2 class="titular-xl">Vuestro invierno<br>es nuestro verano</h2>
+        <p class="entradilla" style="margin-inline:auto;color:rgba(255,253,249,.85)">
+          Larga estancia desde 0,00 € la noche. Nuestra especialidad.
+        </p>
+      </div>
+    </div>
+
+    <div class="escena-progreso"><i id="escena-barra"></i></div>
+  </div>
+</div>
+
+<!-- ============ 4. SERVICIOS ============ -->
+<section class="fondo-negro">
+  <div class="contenedor-ancho">
+    <div class="revelar" style="max-width:700px;margin-bottom:clamp(30px,4vw,54px)">
+      <span class="antetitulo">Servicios e instalaciones</span>
+      <h2 class="titular-xl">Lo necesario,<br>bien hecho</h2>
+    </div>
+    <div class="rejilla rejilla-4">
+            <div class="servicio revelar d1">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg></span>
+        <h3>Tomas de luz</h3>
+        <p>Electricidad en parcela para caravanas y autocaravanas.</p>
+      </div>
+            <div class="servicio revelar d2">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.7s6 6.4 6 10.3a6 6 0 0 1-12 0C6 9.1 12 2.7 12 2.7Z"/></svg></span>
+        <h3>Agua caliente</h3>
+        <p>Gratuita en duchas y fregaderos, todo el año.</p>
+      </div>
+            <div class="servicio revelar d3">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.6 8.8a15.5 15.5 0 0 1 18.8 0M5.9 12.6a10.4 10.4 0 0 1 12.2 0M9.3 16.4a5.3 5.3 0 0 1 5.4 0"/><circle cx="12" cy="20" r="1.1"/></svg></span>
+        <h3>WiFi</h3>
+        <p>Cobertura en zona común y en las casas.</p>
+      </div>
+            <div class="servicio revelar ">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="2.6" width="16" height="18.8" rx="2"/><circle cx="12" cy="14" r="4.6"/><path d="M7.4 6.2h3"/></svg></span>
+        <h3>Lavandería</h3>
+        <p>Lavadoras y secadora a disposición de los clientes.</p>
+      </div>
+            <div class="servicio revelar d1">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.4 8.2h13v6a4.6 4.6 0 0 1-4.6 4.6H8a4.6 4.6 0 0 1-4.6-4.6v-6Z"/><path d="M16.4 9.6h1.8a2.6 2.6 0 0 1 0 5.2h-1.8"/><path d="M6.6 2.6v2.6M10 2.6v2.6M13.4 2.6v2.6"/></svg></span>
+        <h3>Cafetería-bar</h3>
+        <p>Punto de encuentro junto a recepción.</p>
+      </div>
+            <div class="servicio revelar d2">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21.4v-5"/><path d="M12 16.4a5.4 5.4 0 0 0 5.4-5.4 5.4 5.4 0 0 0-2-4.2A4.4 4.4 0 0 0 12 2.6a4.4 4.4 0 0 0-3.4 4.2 5.4 5.4 0 0 0-2 4.2A5.4 5.4 0 0 0 12 16.4Z"/></svg></span>
+        <h3>Zonas de descanso</h3>
+        <p>Áreas tranquilas y vegetación cuidada.</p>
+      </div>
+            <div class="servicio revelar d3">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6.4" cy="9.4" r="2"/><circle cx="10.6" cy="6.2" r="2"/><circle cx="15.4" cy="6.2" r="2"/><circle cx="18.6" cy="10.4" r="2"/><path d="M12.5 12.4c2.6 0 4.8 2.2 4.8 4.6 0 1.9-1.4 3-3.2 3-1 0-1.2-.4-2.4-.4s-1.4.4-2.4.4c-1.8 0-3.2-1.1-3.2-3 0-2.4 2.2-4.6 4.8-4.6Z"/></svg></span>
+        <h3>Mascotas</h3>
+        <p>Bienvenidas en el camping.</p>
+      </div>
+            <div class="servicio revelar ">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 11.2h18v5a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-5Z"/><path d="M12 11.2V6.6a2.4 2.4 0 0 1 2.4-2.4h1.2"/><circle cx="17.4" cy="4.2" r="1.2"/><path d="M7.6 15.4h1.6"/></svg></span>
+        <h3>Fregaderos</h3>
+        <p>Pilas para vajilla y ropa, con agua caliente.</p>
+      </div>
+          </div>
+  </div>
+</section>
+
+<!-- ============ El camping por dentro ============ -->
+<!--
+  Tres fotos sacadas del vídeo. Son las únicas tres del recorrido a pie que
+  aguantan a pantalla completa: el resto está movido (cámara en mano y poca
+  luz). Medido: nitidez 25 / 20 / 16, frente a 90 de las tomas de dron.
+  Cuando haya sesión de fotos, aquí es donde entran las buenas.
+-->
+<section class="fondo-arena compacta" aria-labelledby="t-dentro">
+  <div class="contenedor-ancho">
+    <div class="revelar" style="max-width:680px;margin-bottom:clamp(26px,3vw,44px)">
+      <span class="antetitulo">Por dentro</span>
+      <h2 class="titular-l" id="t-dentro">Caminos, sombra y sitios donde sentarse</h2>
+    </div>
+    <div class="rejilla rejilla-3">
+            <figure class="foto-dentro revelar">
+        <img src="fotos/servicios/camino-macetas-600.webp" srcset="fotos/servicios/camino-macetas-1600.webp 1600w, fotos/servicios/camino-macetas-1000.webp 1000w, fotos/servicios/camino-macetas-600.webp 600w"
+             sizes="(max-width:760px) 92vw, 31vw" loading="lazy" decoding="async"
+             alt="Camino entre las parcelas del camping, con macetas y arbolado">
+      </figure>
+            <figure class="foto-dentro revelar d1">
+        <img src="fotos/servicios/porche-comun-600.webp" srcset="fotos/servicios/porche-comun-1600.webp 1600w, fotos/servicios/porche-comun-1000.webp 1000w, fotos/servicios/porche-comun-600.webp 600w"
+             sizes="(max-width:760px) 92vw, 31vw" loading="lazy" decoding="async"
+             alt="Zona común cubierta, junto a la recepción">
+      </figure>
+            <figure class="foto-dentro revelar d2">
+        <img src="fotos/servicios/mural-mapa-600.webp" srcset="fotos/servicios/mural-mapa-1600.webp 1600w, fotos/servicios/mural-mapa-1000.webp 1000w, fotos/servicios/mural-mapa-600.webp 600w"
+             sizes="(max-width:760px) 92vw, 31vw" loading="lazy" decoding="async"
+             alt="Mural pintado a mano con el mapa de las calas de la zona">
+      </figure>
+          </div>
+  </div>
+</section>
+
+<!-- ============ 5. TARIFAS ============ -->
+<section class="fondo-arena" id="tarifas">
+  <div class="contenedor-ancho">
+    <div class="revelar" style="max-width:760px;margin-bottom:clamp(30px,4vw,50px)">
+      <span class="antetitulo">Tarifas 2026</span>
+      <h2 class="titular-xl">Precios claros,<br>siempre al día</h2>
+      <p class="entradilla">
+        Se leen directamente de nuestro sistema de gestión. Si en recepción
+        cambia una tarifa, cambia aquí.
+      </p>
+          </div>
+
+          <div class="aviso aviso-info">
+        No podemos mostrar las tarifas ahora mismo. Llámanos al
+        <a href="tel:+34950478413">950 47 84 13</a> y te informamos.
+      </div>
+      </div>
+</section>
+
+<!-- ============ RESERVAR / PRESUPUESTO ============ -->
+<section id="reservar">
+  <div class="contenedor-ancho">
+    <div class="revelar" style="max-width:760px;margin-bottom:clamp(30px,4vw,50px)">
+      <span class="antetitulo">Reservar</span>
+      <h2 class="titular-xl">Mira el precio<br>y si queda sitio</h2>
+      <p class="entradilla">
+        Calculamos con las mismas tarifas que recepción y consultamos la
+        disponibilidad real. Sin pedirte ningún dato personal.
+      </p>
+    </div>
+
+    <form class="calculadora revelar" id="formulario">
+      <div class="panel">
+        <div class="campos">
+          <div class="campo ancho">
+            <label for="tipo">¿Qué te interesa?</label>
+            <select id="tipo" name="tipo">
+              <option value="camping">Parcela de camping</option>
+              <option value="rural">Casa rural</option>
+            </select>
+          </div>
+          <div class="campo"><label for="entrada">Entrada</label><input type="date" id="entrada" required></div>
+          <div class="campo"><label for="salida">Salida</label><input type="date" id="salida" required></div>
+          <div class="campo grupo-camping"><label for="adultos">Adultos</label><input type="number" id="adultos" min="0" max="12" value="2"></div>
+          <div class="campo grupo-camping"><label for="ninos">Niños (3-12)</label><input type="number" id="ninos" min="0" max="12" value="0"></div>
+          <div class="campo grupo-camping"><label for="perros">Mascotas</label><input type="number" id="perros" min="0" max="5" value="0"></div>
+          <div class="campo grupo-rural oculto"><label for="personas">Personas</label><input type="number" id="personas" min="1" max="5" value="2"></div>
+        </div>
+
+        <div class="grupo-camping">
+          <hr class="separador">
+          <label style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gris)">Extras</label>
+          <div class="opciones">
+            <label class="chip"><input type="checkbox" id="electricidad" checked> Electricidad</label>
+            <label class="chip"><input type="checkbox" id="tienda_extra"> Tienda adicional</label>
+            <label class="chip"><input type="checkbox" id="coche_extra"> Coche adicional</label>
+            <label class="chip"><input type="checkbox" id="frigorifico_extra"> Nevera</label>
+            <label class="chip"><input type="checkbox" id="larga_estancia"> Larga estancia</label>
+          </div>
+        </div>
+
+        <hr class="separador">
+        <button type="submit" class="boton boton-oscuro" id="btn-calcular" style="width:100%">Calcular precio y disponibilidad</button>
+      </div>
+
+      <div class="panel panel-resultado" id="resultado" aria-live="polite">
+        <div id="res-inicial">
+          <div class="aviso aviso-info">
+            Elige fechas y pulsa el botón. Te decimos el precio exacto y si tenemos sitio.
+          </div>
+        </div>
+        <div id="res-datos" class="oculto">
+          <div class="total-caja">
+            <div class="cifra" id="res-total">—</div>
+            <div class="nota" id="res-nota"></div>
+          </div>
+          <div id="res-disponibilidad"></div>
+          <hr class="separador">
+          <ul class="desglose" id="res-desglose"></ul>
+          <hr class="separador">
+          <div class="botones" style="flex-direction:column">
+            <a href="#" class="boton boton-primario" id="res-wa" style="width:100%">Reservar por WhatsApp</a>
+            <a href="tel:+34950478413" class="boton boton-linea" style="width:100%">Llamar al camping</a>
+          </div>
+          <p style="font-size:.8rem;color:var(--gris-claro);margin-top:16px;text-align:center">
+            Presupuesto orientativo. La reserva se confirma con el camping.
+          </p>
+        </div>
+        <div id="res-error" class="oculto"></div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ 6. ENTORNO ============ -->
+<section class="fondo-negro" id="entorno">
+  <div class="contenedor-ancho">
+    <div class="dos-col">
+      <div class="revelar">
+        <span class="antetitulo">El entorno</span>
+        <h2 class="titular-xl">Qué hay<br>a 20 minutos</h2>
+        <p class="entradilla" style="margin-bottom:2em">
+          Un paisaje de fuertes contrastes. Desde el camping salen rutas de
+          distinto recorrido, para conocer los pueblos abandonados de la sierra
+          o llegar a las playas naturales de los alrededores.
+        </p>
+        <div class="lugar"><span class="min">Mojácar</span>
+          <div><h3>De los pueblos más bonitos de España</h3><p>Casco blanco encaramado a la sierra, con vistas al Mediterráneo.</p></div></div>
+        <div class="lugar"><span class="min">Níjar</span>
+          <div><h3>Tradición alfarera</h3><p>Cerámica y jarapas a las puertas del Cabo de Gata.</p></div></div>
+        <div class="lugar"><span class="min">Sorbas</span>
+          <div><h3>Karst en yeso</h3><p>Un paraje subterráneo único en Europa.</p></div></div>
+        <div class="lugar"><span class="min">Garrucha</span>
+          <div><h3>Gastronomía reconocida</h3><p>Puerto pesquero y la gamba roja del Levante almeriense.</p></div></div>
+        <div class="lugar"><span class="min">Tabernas</span>
+          <div><h3>Estudios de cine</h3><p>El desierto de los grandes westerns europeos.</p></div></div>
+      </div>
+      <div class="revelar d1">
+        <div class="galeria">
+          <a href="fotos/entorno/arrecife-sirenas-1600.webp" target="_blank" rel="noopener"><img src="fotos/entorno/arrecife-sirenas-1600.webp" srcset="fotos/entorno/arrecife-sirenas-1600.webp 1600w" sizes="(max-width:800px) 46vw, 16vw" alt="Arrecife de las Sirenas, en el Cabo de Gata" loading="lazy" decoding="async"></a>
+          <a href="fotos/entorno/entorno-10-700.webp" target="_blank" rel="noopener"><img src="fotos/entorno/entorno-10-800.webp" srcset="fotos/entorno/entorno-10-700.webp 700w, fotos/entorno/entorno-10-800.webp 800w" sizes="(max-width:800px) 46vw, 16vw" alt="Playa cercana al camping" loading="lazy" decoding="async"></a>
+          <a href="fotos/entorno/entorno-12-700.webp" target="_blank" rel="noopener"><img src="fotos/entorno/entorno-12-800.webp" srcset="fotos/entorno/entorno-12-700.webp 700w, fotos/entorno/entorno-12-800.webp 800w" sizes="(max-width:800px) 46vw, 16vw" alt="Costa de Mojácar" loading="lazy" decoding="async"></a>
+          <a href="fotos/entorno/entorno-15-700.webp" target="_blank" rel="noopener"><img src="fotos/entorno/entorno-15-800.webp" srcset="fotos/entorno/entorno-15-700.webp 700w, fotos/entorno/entorno-15-800.webp 800w" sizes="(max-width:800px) 46vw, 16vw" alt="Sierra Cabrera" loading="lazy" decoding="async"></a>
+          <a href="fotos/camping/camping-01-900.webp" target="_blank" rel="noopener"><img src="fotos/camping/camping-01-900.webp" srcset="fotos/camping/camping-01-900.webp 900w" sizes="(max-width:800px) 46vw, 16vw" alt="Zona de parcelas" loading="lazy" decoding="async"></a>
+          <a href="fotos/camping/camping-07-900.webp" target="_blank" rel="noopener"><img src="fotos/camping/camping-07-900.webp" srcset="fotos/camping/camping-07-900.webp 900w" sizes="(max-width:800px) 46vw, 16vw" alt="Instalaciones del camping" loading="lazy" decoding="async"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. CONTACTO ============ -->
+<section id="contacto">
+  <div class="contenedor-ancho">
+    <div class="dos-col">
+      <div class="revelar">
+        <span class="antetitulo">Contacto y cómo llegar</span>
+        <h2 class="titular-xl">Te esperamos<br>en Sopalmo</h2>
+        <div style="margin-top:1.6em">
+          <div class="contacto-dato"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10.4c0 5.6-8 12-8 12s-8-6.4-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10.2" r="2.8"/></svg></span><div><strong>Dirección</strong><span class="v">Sopalmo, 04638 Mojácar, Almería</span></div></div>
+          <div class="contacto-dato"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.4 16.9v2.6a1.8 1.8 0 0 1-2 1.8 17.6 17.6 0 0 1-7.7-2.7 17.3 17.3 0 0 1-5.3-5.3A17.6 17.6 0 0 1 3.7 5.5a1.8 1.8 0 0 1 1.8-2h2.6a1.8 1.8 0 0 1 1.8 1.5c.1.9.3 1.7.6 2.5a1.8 1.8 0 0 1-.4 1.9l-1.1 1.1a14 14 0 0 0 5.3 5.3l1.1-1.1a1.8 1.8 0 0 1 1.9-.4c.8.3 1.6.5 2.5.6a1.8 1.8 0 0 1 1.6 1.9Z"/></svg></span><div><strong>Teléfono</strong><a href="tel:+34950478413">950 47 84 13</a></div></div>
+          <div class="contacto-dato"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="6.4" y="2.2" width="11.2" height="19.6" rx="2.2"/><path d="M11 18.6h2"/></svg></span><div><strong>Móvil y WhatsApp</strong><a href="https://wa.me/34950478413" target="_blank" rel="noopener">660 73 53 68</a></div></div>
+          <div class="contacto-dato"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.6" y="4.8" width="18.8" height="14.4" rx="2"/><path d="m2.6 6.6 9.4 6.4 9.4-6.4"/></svg></span><div><strong>Correo</strong><a href="mailto:campingsopalmo@gmail.com">campingsopalmo@gmail.com</a></div></div>
+          <div class="contacto-dato"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.4"/><path d="M12 6.6V12l3.6 2.2"/></svg></span><div><strong>Recepción</strong><span class="v">Todo el año. Entrada desde 13:00, salida hasta 12:00.</span></div></div>
+          <div class="contacto-dato"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.4"/><path d="m15.6 8.4-2 5.6-5.6 2 2-5.6 5.6-2Z"/></svg></span><div><strong>Coordenadas GPS</strong><span class="v">37.0647459, -1.8690642</span></div></div>
+        </div>
+      </div>
+      <div class="revelar d1">
+        <iframe class="mapa" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Situación del Camping Sopalmo en Mojácar"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-1.8890642%2C37.0527459%2C-1.8490642%2C37.0767459&amp;layer=mapnik&amp;marker=37.0647459%2C-1.8690642"></iframe>
+        <p style="margin-top:14px">
+          <a href="https://www.google.com/maps/dir/?api=1&destination=37.0647459,-1.8690642" target="_blank" rel="noopener">Cómo llegar &rarr;</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PIE ============ -->
+<footer class="pie">
+  <div class="contenedor-ancho">
+    <div class="rejilla rejilla-4">
+      <div>
+        <h4>Camping Sopalmo</h4>
+        <p style="color:var(--gris-claro)">Camping familiar de 30 parcelas y dos casas rurales en Mojácar, junto al Cabo de Gata.</p>
+      </div>
+      <div><h4>Secciones</h4><ul>
+        <li><a href="#alojamientos">Alojamientos</a></li>
+        <li><a href="#experiencia">La experiencia</a></li>
+        <li><a href="#tarifas">Tarifas</a></li>
+        <li><a href="#reservar">Reservar</a></li>
+        <li><a href="#entorno">Entorno</a></li>
+      </ul></div>
+      <div><h4>Contacto</h4><ul>
+        <li><a href="tel:+34950478413">950 47 84 13</a></li>
+        <li><a href="https://wa.me/34950478413" target="_blank" rel="noopener">660 73 53 68</a></li>
+        <li><a href="mailto:campingsopalmo@gmail.com">campingsopalmo@gmail.com</a></li>
+        <li>Sopalmo, 04638 Mojácar, Almería</li>
+      </ul></div>
+      <div><h4>Información legal</h4><ul>
+        <li><a href="privacidad.html">Política de privacidad</a></li>
+        <li><a href="condiciones.html">Condiciones de reserva</a></li>
+        <li><a href="normas.pdf">Normas del camping</a></li>
+      </ul></div>
+    </div>
+    <!-- Atribución de las imágenes del descenso de la portada. El Sentinel-2
+         de EOX y las ortofotos del PNOA son CC BY 4.0: citarlas no es cortesía,
+         es la condición de la licencia. -->
+    <p class="pie-creditos">
+      Imágenes del descenso de la portada:
+      <a href="https://epic.gsfc.nasa.gov/" target="_blank" rel="noopener">NASA DSCOVR/EPIC</a> y
+      <a href="https://visibleearth.nasa.gov/collection/1484/blue-marble" target="_blank" rel="noopener">Blue Marble</a>
+      (dominio público) ·
+      <a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless</a>
+      por EOX IT Services GmbH, con datos Copernicus Sentinel modificados
+      (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener nofollow">CC&nbsp;BY&nbsp;4.0</a>) ·
+      Ortofotos <a href="https://pnoa.ign.es/" target="_blank" rel="noopener">PNOA</a>
+      © Instituto Geográfico Nacional de España (CC&nbsp;BY&nbsp;4.0).
+      La aérea final es del propio camping.
+    </p>
+    <div class="pie-legal">
+      <span>&copy; 2026 Sopalmo Camping S.L. · NIF B04451753</span>
+      <span>Mojácar · Almería · Andalucía</span>
+    </div>
+  </div>
+</footer>
+
+<a class="reservar-fijo entra" style="--paso:7" href="#reservar">Reservar</a>
+
+<script src="js/app.js?v=1786717670" defer></script>
+</body>
+</html>

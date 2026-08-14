@@ -1,0 +1,35 @@
+{
+ "hero/playa-muertos-panoramica": {
+  "orig": "3320x1872",
+  "anchos": [
+   2560,
+   1600,
+   1000
+  ]
+ },
+ "hero/playa-muertos-vertical": {
+  "orig": "2160x3840",
+  "anchos": [
+   2160,
+   1280,
+   800
+  ]
+ },
+ "entorno/arrecife-sirenas": {
+  "orig": "5000x3750",
+  "anchos": [
+   2560,
+   2400,
+   1600,
+   1000
+  ]
+ },
+ "cortijillo/bano": {
+  "orig": "6528x4896",
+  "anchos": [
+   2560,
+   1600,
+   900
+  ]
+ }
+}

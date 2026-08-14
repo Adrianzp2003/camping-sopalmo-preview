@@ -1,0 +1,856 @@
+/* ==========================================================================
+   Camping Sopalmo — hoja de estilos
+   Estética según guia-web-camping.md: vídeo hero, tipografía grande,
+   secciones que ocupan pantalla, scroll reveal. Sin frameworks ni CDNs:
+   la guía insiste en que todo esto no sirve de nada si la web va lenta.
+   ========================================================================== */
+
+:root {
+  --negro:      #14150f;
+  --negro-suave:#1d1f17;
+  --verde:      #2f4f3e;
+  --verde-medio:#47705a;
+  --arena:      #f7f3ea;
+  --arena-media:#e9dfcc;
+  --arena-osc:  #d3c4a8;
+  --terracota:  #c1663f;
+  --terracota-cl:#dd8f68;
+  --tinta:      #22241f;
+  --gris:       #6c6d64;
+  --gris-claro: #9a9b92;
+  --blanco:     #fffdf9;
+
+  --sombra:    0 4px 20px rgba(20,21,15,.10);
+  --sombra-lg: 0 18px 50px rgba(20,21,15,.20);
+
+  --radio: 4px;
+  --nav-h: 76px;
+
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+
+  --ancho: 1280px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+html.precarga { overflow: hidden; }   /* OJO: no usar .cargando aquí: esa clase
+                                          es la ruedecita del botón y convertía
+                                          la página entera en un círculo girando. */
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--tinta);
+  background: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-underline-offset: 3px; }
+
+h1,h2,h3,h4 { font-family: var(--display); font-weight: 600; line-height: 1.05;
+  margin: 0 0 .4em; letter-spacing: -.02em; }
+
+/* Tipografía enorme — técnica nº 3 de la guía */
+.titular-xxl { font-size: clamp(2.8rem, 11vw, 9rem); line-height: .93; letter-spacing: -.035em; }
+.titular-xl  { font-size: clamp(2.2rem, 6.5vw, 5rem);  line-height: .98; letter-spacing: -.03em; }
+.titular-l   { font-size: clamp(1.7rem, 3.6vw, 2.9rem); }
+
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+.contenedor { width: 100%; max-width: var(--ancho); margin-inline: auto; padding-inline: 26px; }
+.contenedor-ancho { max-width: 1600px; margin-inline: auto; padding-inline: 26px; }
+
+section { padding: clamp(70px, 10vw, 150px) 0; position: relative; }
+.pantalla-completa { min-height: 100svh; display: flex; align-items: center; }
+
+.fondo-arena { background: var(--arena); }
+.fondo-negro { background: var(--negro); color: var(--arena); }
+.fondo-negro h1,.fondo-negro h2,.fondo-negro h3 { color: var(--blanco); }
+
+.antetitulo {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--sans); font-size: .72rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--terracota);
+  margin-bottom: 1.4em;
+}
+.antetitulo::before { content: ""; width: 34px; height: 1px; background: currentColor; }
+
+.entradilla { font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--gris); max-width: 60ch; }
+.fondo-negro .entradilla { color: var(--arena-osc); }
+
+/* ---------- NAVEGACIÓN ---------- */
+
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: var(--nav-h);
+  display: flex; align-items: center;
+  transition: background .35s var(--ease), border-color .35s, backdrop-filter .35s;
+  border-bottom: 1px solid transparent;
+}
+.nav.solida { background: rgba(255,253,249,.95); backdrop-filter: blur(12px); border-bottom-color: var(--arena-media); }
+.nav-interior { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+
+.logo { font-family: var(--display); font-size: 1.3rem; font-weight: 700; text-decoration: none;
+  color: var(--blanco); line-height: 1.1; transition: color .35s; }
+.logo span { display: block; font-family: var(--sans); font-size: .58rem; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.nav.solida .logo { color: var(--verde); }
+
+.menu { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.menu a { display: block; padding: 10px 15px; font-size: .88rem; font-weight: 600;
+  letter-spacing: .04em; color: var(--blanco); text-decoration: none; transition: color .3s, opacity .3s; opacity: .88; }
+.menu a:hover { opacity: 1; color: var(--terracota-cl); }
+.nav.solida .menu a { color: var(--tinta); }
+.nav.solida .menu a:hover { color: var(--terracota); }
+
+.hamburguesa { display: none; background: none; border: 0; cursor: pointer; padding: 10px; }
+.hamburguesa span { display: block; width: 26px; height: 2px; margin: 6px 0; background: var(--blanco);
+  transition: transform .25s var(--ease), opacity .25s, background .35s; }
+.nav.solida .hamburguesa span { background: var(--verde); }
+.hamburguesa[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburguesa[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburguesa[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Botón RESERVAR fijo — la guía lo marca como imprescindible */
+.reservar-fijo {
+  position: fixed; z-index: 190;
+  right: 24px; bottom: 24px;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 30px;
+  background: var(--terracota); color: var(--blanco);
+  font-weight: 700; font-size: .95rem; letter-spacing: .06em; text-transform: uppercase;
+  text-decoration: none; border-radius: 999px;
+  box-shadow: var(--sombra-lg);
+  transition: transform .25s var(--ease), background .25s;
+}
+.reservar-fijo:hover { background: #a9542f; transform: translateY(-2px); color: var(--blanco); }
+
+/* ---------- HERO con vídeo (técnica nº 1) ---------- */
+
+.hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end;
+  overflow: hidden; color: var(--blanco); padding: 0 0 clamp(50px,9vh,110px); }
+.hero-media { position: absolute; inset: 0; z-index: 0; }
+.hero-media video, .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+
+.hero::after { content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(20,21,15,.55) 0%, rgba(20,21,15,.18) 35%, rgba(20,21,15,.82) 100%); }
+/* El contenido del hero va por encima del fondo (z-index 0) y del
+   degradado (z-index 1). Ojo: el marcado usa .contenedor-ancho, y la
+   regla solo nombraba .contenedor, asi que el texto quedaba estatico
+   y se pintaba DEBAJO de la imagen. */
+.hero .contenedor,
+.hero .contenedor-ancho { position: relative; z-index: 2; }
+.hero h1 { color: var(--blanco); margin-bottom: .25em; }
+.hero .lema { font-size: clamp(1.02rem,1.9vw,1.3rem); max-width: 44ch; color: rgba(255,253,249,.9); margin-bottom: 2em; }
+
+.hero-pie { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 26px; margin-top: 2.6em; padding-top: 1.8em; border-top: 1px solid rgba(255,253,249,.2); }
+.hero-datos { display: flex; flex-wrap: wrap; gap: 12px 40px; }
+.hero-dato strong { display: block; font-family: var(--display); font-size: clamp(1.5rem,3vw,2.1rem); line-height: 1; }
+.hero-dato span { font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+
+.baja-scroll { display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; opacity: .7; text-decoration: none; color: inherit; }
+.baja-scroll i { display: block; width: 1px; height: 42px; background: currentColor; animation: baja 2s infinite; transform-origin: top; }
+@keyframes baja { 0%,100% { transform: scaleY(.35); opacity:.35 } 50% { transform: scaleY(1); opacity:1 } }
+
+/* ---------- MARQUESINA (técnica nº 3) ---------- */
+
+.marquesina { overflow: hidden; padding: 26px 0; border-block: 1px solid var(--arena-media);
+  background: var(--arena); user-select: none; }
+.fondo-negro .marquesina { border-color: rgba(247,243,234,.14); background: transparent; }
+.marquesina-pista { display: flex; width: max-content; animation: correr 38s linear infinite; }
+.marquesina:hover .marquesina-pista { animation-play-state: paused; }
+.marquesina-pista span { font-family: var(--display); font-size: clamp(1.6rem,4vw,3.1rem);
+  padding-inline: 28px; color: var(--verde); white-space: nowrap; letter-spacing: -.02em; }
+.fondo-negro .marquesina-pista span { color: var(--arena); }
+.marquesina-pista span::after { content: "·"; margin-left: 56px; color: var(--terracota); }
+@keyframes correr { to { transform: translateX(-50%); } }
+
+/* ---------- VÍDEO CONTROLADO POR SCROLL (técnica nº 7) ---------- */
+
+.escena-scroll { position: relative; height: 320vh; background: var(--negro); }
+.escena-fija { position: sticky; top: 0; height: 100svh; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; }
+.escena-fija video, .escena-fija img.respaldo {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+}
+.escena-fija::after { content: ""; position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse at center, rgba(20,21,15,.32) 0%, rgba(20,21,15,.78) 100%); }
+.escena-texto { position: relative; z-index: 2; text-align: center; color: var(--blanco);
+  padding-inline: 26px; max-width: 900px; }
+.escena-texto h2 { color: var(--blanco); margin-bottom: .3em; }
+.escena-paso { opacity: 0; transform: translateY(22px); transition: opacity .6s var(--ease), transform .6s var(--ease);
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.escena-paso.visible { opacity: 1; transform: none; position: relative; }
+.escena-progreso { position: absolute; left: 50%; bottom: 42px; transform: translateX(-50%); z-index: 3;
+  width: min(320px, 60vw); height: 2px; background: rgba(247,243,234,.22); }
+.escena-progreso i { display: block; height: 100%; width: 0; background: var(--terracota); }
+
+/* ---------- SCROLL REVEAL (técnica nº 4) ---------- */
+
+.revelar { opacity: 0; transform: translateY(30px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.revelar.dentro { opacity: 1; transform: none; }
+.revelar.d1 { transition-delay: .1s } .revelar.d2 { transition-delay: .2s } .revelar.d3 { transition-delay: .3s }
+
+.parallax { will-change: transform; }
+
+/* ---------- BOTONES ---------- */
+
+.botones { display: flex; flex-wrap: wrap; gap: 12px; }
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px 32px; font-family: var(--sans); font-size: .92rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  border: 1px solid transparent; border-radius: 999px; cursor: pointer; text-decoration: none;
+  transition: background .25s, color .25s, border-color .25s, transform .2s var(--ease);
+}
+.boton:active { transform: translateY(1px); }
+.boton-primario { background: var(--terracota); color: var(--blanco); }
+.boton-primario:hover { background: #a9542f; color: var(--blanco); }
+.boton-claro { background: transparent; color: var(--blanco); border-color: rgba(255,253,249,.5); }
+.boton-claro:hover { background: var(--blanco); color: var(--negro); }
+.boton-oscuro { background: var(--verde); color: var(--blanco); }
+.boton-oscuro:hover { background: var(--verde-medio); color: var(--blanco); }
+.boton-linea { background: transparent; color: var(--verde); border-color: var(--arena-osc); }
+.boton-linea:hover { border-color: var(--verde); background: var(--verde); color: var(--blanco); }
+.boton[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* ---------- REJILLAS ---------- */
+
+.rejilla { display: grid; gap: clamp(20px,2.6vw,34px); }
+.rejilla-2 { grid-template-columns: repeat(auto-fit, minmax(330px,1fr)); }
+.rejilla-3 { grid-template-columns: repeat(auto-fit, minmax(290px,1fr)); }
+.rejilla-4 { grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); }
+.dos-col { display: grid; gap: clamp(30px,5vw,80px); grid-template-columns: 1fr 1fr; align-items: center; }
+
+/* ---------- ALOJAMIENTOS ---------- */
+
+/* La tarjeta tenía fondo negro y un degradado al 88%: quedaba un bloque
+   sólido bajo la foto que cortaba la imagen en seco. Ahora el oscurecido
+   es progresivo y se apoya en la propia foto. */
+.aloj { position: relative; overflow: hidden; background: var(--negro-suave); border-radius: 10px;
+  display: flex; flex-direction: column; min-height: 460px; text-decoration: none; color: var(--blanco); }
+.aloj .fondo { position: absolute; inset: 0; z-index: 0; }
+.aloj .fondo img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.aloj::after { content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg,
+      rgba(20,21,15,0)    38%,
+      rgba(20,21,15,.28)  58%,
+      rgba(20,21,15,.62)  78%,
+      rgba(20,21,15,.80) 100%); }
+.aloj:hover .fondo img { transform: scale(1.06); }
+.aloj .cuerpo { position: relative; z-index: 2; margin-top: auto; padding: 30px 28px; }
+.aloj h3 { color: var(--blanco); font-size: 1.7rem; margin-bottom: .1em; }
+.aloj .cap { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--terracota-cl); }
+.aloj ul { margin: 1em 0 1.3em; padding: 0; list-style: none; font-size: .92rem; color: rgba(255,253,249,.82); }
+.aloj ul li { padding: 3px 0; }
+.aloj ul li::before { content: "— "; color: var(--terracota-cl); }
+.aloj .pie { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  border-top: 1px solid rgba(255,253,249,.16); padding-top: 18px; margin-top: 4px; }
+.precio-desde { font-family: var(--display); font-size: 1.9rem; line-height: 1; }
+.precio-desde small { display: block; font-family: var(--sans); font-size: .68rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-top: 5px; }
+
+/* ---------- SERVICIOS ---------- */
+
+.servicio { padding: 26px 0; border-top: 1px solid var(--arena-media); }
+.fondo-negro .servicio { border-color: rgba(247,243,234,.14); }
+.servicio .ic { font-size: 1.5rem; margin-bottom: 12px; display: block; }
+.servicio h3 { font-size: 1.05rem; font-family: var(--sans); font-weight: 700; margin-bottom: .3em; }
+.servicio p { font-size: .9rem; color: var(--gris); margin: 0; }
+.fondo-negro .servicio p { color: var(--arena-osc); }
+
+/* ---------- ENTORNO ---------- */
+
+.lugar { display: flex; gap: 22px; align-items: baseline; padding: 22px 0; border-top: 1px solid rgba(247,243,234,.15); }
+.lugar .min { flex: 0 0 auto; min-width: 86px; font-family: var(--display); font-size: 1.5rem; color: var(--terracota-cl); }
+.lugar h3 { font-size: 1.15rem; margin-bottom: .1em; }
+.lugar p { font-size: .92rem; color: var(--arena-osc); margin: 0; }
+
+/* ---------- TARIFAS ---------- */
+
+.aviso-vivo { display: inline-flex; align-items: center; gap: 9px; font-size: .8rem; color: var(--gris);
+  border: 1px solid var(--arena-osc); padding: 8px 16px; border-radius: 999px; }
+.punto-vivo { width: 7px; height: 7px; border-radius: 50%; background: #3f9c5c; animation: latido 2.4s infinite; }
+@keyframes latido { 0%{box-shadow:0 0 0 0 rgba(63,156,92,.5)} 70%{box-shadow:0 0 0 9px rgba(63,156,92,0)} 100%{box-shadow:0 0 0 0 rgba(63,156,92,0)} }
+
+.tabla-envoltorio { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.tarifas { width: 100%; min-width: 480px; border-collapse: collapse; font-size: .96rem; background: var(--blanco); }
+table.tarifas th, table.tarifas td { padding: 15px 18px; text-align: left; }
+table.tarifas thead th { background: var(--negro); color: var(--arena); font-family: var(--sans);
+  font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+table.tarifas thead th:not(:first-child), table.tarifas tbody td:not(:first-child) { text-align: right; }
+table.tarifas tbody tr { border-bottom: 1px solid var(--arena-media); }
+table.tarifas tbody tr:hover { background: var(--arena); }
+table.tarifas td.precio { font-family: var(--display); font-size: 1.15rem; color: var(--verde); white-space: nowrap; }
+table.tarifas caption { caption-side: bottom; padding-top: 14px; font-size: .84rem; color: var(--gris-claro); text-align: left; }
+
+.pestanas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.pestana { padding: 11px 24px; border-radius: 999px; cursor: pointer; background: transparent;
+  border: 1px solid var(--arena-osc); font-family: var(--sans); font-size: .82rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--gris); transition: all .25s; }
+.pestana[aria-selected="true"] { background: var(--negro); border-color: var(--negro); color: var(--arena); }
+
+/* ---------- CALCULADORA ---------- */
+
+.calculadora { display: grid; gap: clamp(24px,3vw,44px); grid-template-columns: 1.1fr .9fr; align-items: start; }
+.panel { background: var(--blanco); border: 1px solid var(--arena-media); padding: clamp(24px,3vw,38px); }
+.fondo-arena .panel { border-color: var(--arena-osc); }
+.panel-resultado { position: sticky; top: calc(var(--nav-h) + 20px); }
+
+.campos { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); }
+.campo { display: flex; flex-direction: column; gap: 7px; }
+.campo.ancho { grid-column: 1 / -1; }
+.campo label { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gris); }
+.campo input, .campo select { font-family: var(--sans); font-size: 1rem; padding: 13px 14px;
+  border: 1px solid var(--arena-osc); border-radius: var(--radio); background: var(--blanco); color: var(--tinta); width: 100%; }
+.campo input:focus, .campo select:focus { outline: none; border-color: var(--verde); box-shadow: 0 0 0 3px rgba(47,79,62,.12); }
+
+.opciones { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--arena-osc); font-size: .87rem; cursor: pointer; user-select: none; }
+.chip input { accent-color: var(--verde); margin: 0; }
+.chip:has(input:checked) { border-color: var(--verde); background: var(--verde); color: var(--blanco); font-weight: 600; }
+
+.separador { height: 1px; background: var(--arena-media); margin: 24px 0; border: 0; }
+
+.total-caja { text-align: center; padding: 4px 0 20px; }
+.total-caja .cifra { font-family: var(--display); font-size: clamp(2.8rem,8vw,4rem); line-height: 1; color: var(--verde); }
+.total-caja .nota { font-size: .85rem; color: var(--gris-claro); margin-top: .5em; }
+
+.desglose { list-style: none; margin: 0; padding: 0; font-size: .92rem; }
+.desglose li { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; }
+.desglose li + li { border-top: 1px dashed var(--arena-media); }
+.desglose .etiqueta { color: var(--gris); }
+.desglose .valor { font-weight: 600; white-space: nowrap; }
+
+.aviso { display: flex; gap: 12px; align-items: flex-start; padding: 14px 17px; font-size: .9rem; line-height: 1.5; }
+.aviso-ok { background: #eaf5ed; color: #1e5c33; border: 1px solid #c3e2cd; }
+.aviso-no { background: #fbeceb; color: #8d2f26; border: 1px solid #f0cdc9; }
+.aviso-info { background: var(--arena); color: var(--gris); border: 1px solid var(--arena-media); }
+
+.cargando { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,253,249,.35);
+  border-top-color: var(--blanco); border-radius: 50%; animation: giro .7s linear infinite; }
+@keyframes giro { to { transform: rotate(360deg); } }
+
+.oculto { display: none !important; }
+
+/* ---------- GALERÍA ---------- */
+
+.galeria { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); }
+.galeria a { display: block; aspect-ratio: 1; overflow: hidden; background: var(--negro-suave); }
+.galeria img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease), opacity .3s; }
+.galeria a:hover img { transform: scale(1.08); opacity: .88; }
+
+/* ---------- CONTACTO ---------- */
+
+.contacto-dato { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-top: 1px solid var(--arena-media); }
+.contacto-dato .ic { flex: 0 0 auto; font-size: 1.2rem; width: 26px; }
+.contacto-dato strong { display: block; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gris-claro); font-weight: 700; margin-bottom: 3px; }
+.contacto-dato a, .contacto-dato span.v { font-size: 1.05rem; text-decoration: none; color: var(--tinta); }
+.contacto-dato a:hover { color: var(--terracota); }
+.mapa { width: 100%; aspect-ratio: 16/12; border: 0; background: var(--arena-media); filter: saturate(.9); }
+
+/* ---------- PIE ---------- */
+
+.pie { background: var(--negro); color: var(--arena-osc); padding: 80px 0 30px; font-size: .92rem; }
+.pie h4 { color: var(--blanco); font-family: var(--sans); font-size: .68rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; margin-bottom: 1.3em; }
+.pie a { color: var(--arena-osc); text-decoration: none; }
+.pie a:hover { color: var(--terracota-cl); }
+.pie ul { list-style: none; margin: 0; padding: 0; }
+.pie ul li { margin-bottom: .6em; }
+.pie-legal { margin-top: 22px; padding-top: 26px; border-top: 1px solid rgba(247,243,234,.14);
+  display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between; font-size: .82rem; color: var(--gris-claro); }
+
+/* Créditos de las imágenes del descenso: obligación de la licencia CC BY 4.0,
+   así que van visibles, pero sin robarle peso al resto del pie. */
+.pie-creditos { margin: 44px 0 0; max-width: 92ch;
+  font-size: .72rem; line-height: 1.7; color: rgba(247,243,234,.42); }
+.pie-creditos a { color: rgba(247,243,234,.62); text-decoration: underline;
+  text-underline-offset: 2px; }
+.pie-creditos a:hover { color: var(--blanco); }
+
+/* ---------- Cursor personalizado (nº 6, solo escritorio fino) ---------- */
+
+@media (hover: hover) and (pointer: fine) {
+  .cursor { position: fixed; top: 0; left: 0; width: 26px; height: 26px; border: 1px solid var(--terracota);
+    border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%);
+    transition: width .25s var(--ease), height .25s var(--ease), background .25s, opacity .25s; mix-blend-mode: difference; }
+  .cursor.grande { width: 62px; height: 62px; background: rgba(193,102,63,.22); }
+  body.con-cursor, body.con-cursor a, body.con-cursor button { cursor: none; }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1000px) {
+  .calculadora { grid-template-columns: 1fr; }
+  .panel-resultado { position: static; }
+  .dos-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .hamburguesa { display: block; }
+  .menu {
+    position: fixed; inset: var(--nav-h) 0 auto 0; flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--blanco); box-shadow: var(--sombra-lg); padding: 12px 22px 24px;
+    max-height: calc(100dvh - var(--nav-h)); overflow-y: auto;
+    transform: translateY(-10px); opacity: 0; pointer-events: none; transition: opacity .22s, transform .22s;
+  }
+  .menu.abierto { transform: none; opacity: 1; pointer-events: auto; }
+  .menu a, .nav.solida .menu a { color: var(--tinta); padding: 15px 8px; font-size: 1.05rem; }
+  .menu li + li a { border-top: 1px solid var(--arena-media); }
+  /* La escena medía menos que la ventana, así que el recorrido salía
+     NEGATIVO y la secuencia se quedaba clavada en el primer fotograma.
+     Ahora tiene recorrido propio y usa el juego de imágenes reducido. */
+  .escena-scroll { height: 260vh; }
+  .escena-fija { position: sticky; top: 0; height: 100svh; }
+  .reservar-fijo { right: 16px; bottom: 16px; padding: 14px 24px; font-size: .85rem; }
+}
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  section { padding: 56px 0; }
+  .hero { min-height: 92svh; }
+  .botones .boton { width: 100%; }
+  .hero-pie { flex-direction: column; align-items: flex-start; }
+  .baja-scroll { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; }
+  .revelar { opacity: 1 !important; transform: none !important; }
+  .escena-scroll { height: auto; }
+  .escena-fija { position: relative; }
+}
+
+@media print {
+  .nav, .reservar-fijo, .cursor, #velo, .escena-scroll, .marquesina, .baja-scroll { display: none !important; }
+  .hero { min-height: auto; color: #000; }
+  .hero::after, .hero-media { display: none; }
+}
+
+/* ---------- Iconos SVG (sustituyen a los emoji) ---------- */
+
+.servicio .ic { display: block; width: 26px; height: 26px; margin-bottom: 14px; color: var(--terracota); }
+.servicio .ic svg { width: 100%; height: 100%; }
+.fondo-negro .servicio .ic { color: var(--terracota-cl); }
+
+.contacto-dato .ic { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 3px; color: var(--terracota); }
+.contacto-dato .ic svg { width: 100%; height: 100%; }
+
+.nav-tel svg { width: 16px; height: 16px; }
+
+.aviso .ico-aviso { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 2px; }
+
+/* ==========================================================================
+   AMPLIACIÓN 10/08/2026
+   Fichas de casa rural, visor a pantalla completa, preloader rehecho y
+   navegación con indicador de sección. Sigue sin dependencias externas.
+   ========================================================================== */
+
+/* ---------- NAVEGACIÓN: sección activa ---------- */
+
+.menu a { position: relative; }
+.menu a::after {
+  content: ""; position: absolute; left: 15px; right: 15px; bottom: 4px; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: left;
+  transition: transform .32s var(--ease);
+}
+.menu a:hover::after, .menu a.actual::after { transform: scaleX(1); }
+.menu a.actual { opacity: 1; color: var(--terracota-cl); }
+.nav.solida .menu a.actual { color: var(--terracota); }
+
+.progreso-lectura {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0;
+  background: var(--terracota); z-index: 210; transition: width .1s linear;
+}
+
+.velo-salida {
+  position: fixed; inset: 0; z-index: 9998; background: var(--negro);
+  opacity: 0; pointer-events: none; transition: opacity .34s var(--ease);
+}
+.velo-salida.activo { opacity: 1; pointer-events: all; }
+
+/* ---------- FICHA DE CASA ---------- */
+
+.hero-casa { min-height: 88svh; }
+.hero-casa .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.volver {
+  display: inline-block; margin-bottom: 1.6em; font-size: .82rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
+  color: rgba(255,253,249,.75); transition: color .25s, transform .25s var(--ease);
+}
+.volver:hover { color: var(--blanco); transform: translateX(-4px); }
+
+.equipamiento { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.equipo-grupo h3 {
+  font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--terracota); margin-bottom: .9em;
+  padding-bottom: .7em; border-bottom: 1px solid var(--arena-media);
+}
+.equipo-grupo ul { list-style: none; margin: 0; padding: 0; font-size: .93rem; color: var(--gris); }
+.equipo-grupo li { padding: 5px 0 5px 18px; position: relative; }
+.equipo-grupo li::before {
+  content: ""; position: absolute; left: 0; top: 13px; width: 7px; height: 1px; background: var(--terracota);
+}
+
+/* ---------- GALERÍA DE LA CASA ---------- */
+
+.galeria-casa { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.gc-item {
+  position: relative; display: block; padding: 0; border: 0; cursor: zoom-in;
+  background: var(--arena-media); overflow: hidden; aspect-ratio: 4/3; border-radius: var(--radio);
+}
+.gc-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+.gc-item::after {
+  content: ""; position: absolute; inset: 0; background: rgba(20,21,15,.16);
+  opacity: 0; transition: opacity .3s;
+}
+.gc-item:hover img, .gc-item:focus-visible img { transform: scale(1.05); }
+.gc-item:hover::after, .gc-item:focus-visible::after { opacity: 1; }
+.gc-item:focus-visible { outline: 2px solid var(--terracota); outline-offset: 3px; }
+@media (min-width: 900px) { .gc-item:first-child { grid-column: span 2; aspect-ratio: 16/9; } }
+
+/* ---------- VISOR A PANTALLA COMPLETA ---------- */
+
+.visor {
+  position: fixed; inset: 0; z-index: 9997;
+  background: rgba(10,11,8,.96); backdrop-filter: blur(6px);
+  display: grid; place-items: center; padding: clamp(12px, 4vw, 48px);
+  opacity: 0; transition: opacity .3s var(--ease);
+}
+.visor[hidden] { display: none; }
+.visor.abierto { opacity: 1; }
+.visor-figura { margin: 0; max-width: 100%; max-height: 100%; display: flex;
+  flex-direction: column; align-items: center; gap: 14px; }
+.visor-figura img {
+  max-width: 100%; max-height: 78svh; object-fit: contain; border-radius: 2px;
+  opacity: 0; transform: scale(.98); transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.visor.listo .visor-figura img { opacity: 1; transform: none; }
+.visor-figura figcaption {
+  color: var(--arena-osc); font-size: .9rem; text-align: center; max-width: 60ch; line-height: 1.5;
+}
+.visor-cerrar, .visor-nav {
+  position: absolute; z-index: 2; background: rgba(247,243,234,.1); color: var(--blanco);
+  border: 1px solid rgba(247,243,234,.2); cursor: pointer; border-radius: 50%;
+  display: grid; place-items: center; transition: background .25s, transform .25s var(--ease);
+  backdrop-filter: blur(4px);
+}
+.visor-cerrar { top: clamp(12px,3vw,26px); right: clamp(12px,3vw,26px); width: 46px; height: 46px; font-size: 1.9rem; line-height: 1; }
+.visor-nav { top: 50%; transform: translateY(-50%); width: 52px; height: 52px; font-size: 2.1rem; line-height: 1; }
+.visor-prev { left: clamp(8px,2vw,26px); }
+.visor-sig  { right: clamp(8px,2vw,26px); }
+.visor-cerrar:hover, .visor-nav:hover { background: rgba(247,243,234,.22); }
+.visor-nav:hover { transform: translateY(-50%) scale(1.06); }
+.visor-contador {
+  position: absolute; bottom: clamp(12px,3vw,26px); left: 50%; transform: translateX(-50%);
+  color: var(--arena-osc); font-size: .8rem; letter-spacing: .14em;
+  font-variant-numeric: tabular-nums;
+}
+body.visor-abierto { overflow: hidden; }
+
+/* ---------- LA OTRA CASA ---------- */
+
+.otra-casa {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(22px,4vw,56px);
+  align-items: center; text-decoration: none; color: inherit;
+  padding: clamp(20px,3vw,36px); border: 1px solid var(--arena-media); border-radius: var(--radio);
+  transition: border-color .3s, background .3s;
+}
+.otra-casa:hover { border-color: var(--arena-osc); background: var(--arena); }
+.oc-foto { aspect-ratio: 4/3; overflow: hidden; border-radius: var(--radio); background: var(--arena-media); }
+.oc-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+.otra-casa:hover .oc-foto img { transform: scale(1.05); }
+
+.aloj-enlace { text-decoration: none; color: inherit; display: block; }
+
+@media (max-width: 860px) {
+  .otra-casa { grid-template-columns: 1fr; }
+  .visor-nav { width: 44px; height: 44px; font-size: 1.7rem; }
+  .gc-item:first-child { grid-column: auto; aspect-ratio: 4/3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visor-figura img { transition: none; opacity: 1; transform: none; }
+}
+
+/* ---------- Mosaico de vistas aéreas ---------- */
+
+.mosaico-aereo {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+}
+.mosaico-celda {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radio);
+  background: var(--negro-suave);
+  aspect-ratio: 16 / 10;
+}
+/* La primera manda: ocupa dos columnas y dos filas. */
+.mosaico-celda.grande { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+.mosaico-celda img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 1.1s var(--ease), filter .5s;
+}
+.mosaico-celda:hover img { transform: scale(1.045); filter: brightness(1.06); }
+
+@media (max-width: 1200px) {
+  .mosaico-aereo { grid-template-columns: repeat(2, 1fr); }
+  .mosaico-celda.grande { grid-column: span 2; grid-row: auto; aspect-ratio: 16/9; }
+}
+@media (max-width: 760px) {
+  .mosaico-aereo { grid-template-columns: 1fr; }
+  /* Sin esto la destacada salía más baja que las demás y descuadraba. */
+  .mosaico-celda,
+  .mosaico-celda.grande { grid-column: auto; aspect-ratio: 16/10; }
+}
+
+/* ==========================================================================
+   ENTRADA · EL ATERRIZAJE
+   --------------------------------------------------------------------------
+   Antes había una pantalla de carga con un aro girando. Se ha quitado: una
+   rueda dando vueltas no dice nada del sitio y hace esperar mirando a la nada.
+
+   Ahora la entrada es la propia portada. La foto aérea arranca ampliada y
+   apagada —como si el dron siguiera alto— y baja hasta su encuadre real
+   mientras recupera luz. Cuando termina de "aterrizar", el menú, el titular,
+   los botones y los datos entran escalonados.
+
+   Todo es CSS sobre la imagen que ya se estaba descargando: no añade ni un
+   byte de red, y el movimiento no depende de que cargue ningún vídeo.
+   ========================================================================== */
+
+/* Velo: solo cubre hasta que la imagen está decodificada, para que no se vea
+   el salto de un fondo vacío a la foto. */
+#velo {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--negro);
+  opacity: 1; pointer-events: none;
+  transition: opacity .55s var(--ease);
+}
+html.aterrizado #velo { opacity: 0; }
+
+/* --- La imagen aterriza, y lo hace BAJANDO --- */
+/*
+   El sentido del zoom es lo que decide si se lee como subir o bajar:
+   alejarse = el dron se va; acercarse = el dron baja. Antes iba al revés.
+
+   Ahora arranca en el encuadre completo y ligeramente alto (se ve más
+   terreno, con la bruma de la altura) y desciende acercándose, con una
+   deriva hacia abajo. Al final se posa y la imagen queda nítida.
+*/
+.hero-fondo {
+  position: absolute; inset: 0;
+  transform: scale(1.005) translateY(-3.2%);
+  filter: brightness(.66) saturate(.82) blur(3px);
+  transform-origin: 50% 38%;
+  will-change: transform, filter;
+}
+html.aterrizado .hero-fondo {
+  transform: scale(1.11) translateY(0);
+  filter: none;
+  /* Frenada larga al final: es lo que da la sensación de posarse. */
+  transition: transform 3000ms cubic-bezier(.14,.72,.16,1),
+              filter    1900ms cubic-bezier(.33,1,.68,1);
+}
+
+/* --- Lo demás entra detrás, en cascada ---
+   Con TRANSICIÓN esto se quedaba a medias: el navegador dejaba la
+   transición en estado "running" indefinidamente y los textos no llegaban
+   nunca a verse. Con ANIMACIÓN y `forwards` el estado final queda fijado
+   pase lo que pase, que es lo que necesitamos aquí. */
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes entrarSinMover {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes entrarBoton {
+  from { opacity: 0; transform: translateY(26px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+.entra { opacity: 0; }
+html.aterrizado .entra {
+  animation: entrar .85s var(--ease) forwards;
+  animation-delay: calc(620ms + var(--paso, 0) * 130ms);
+}
+/* La cabecera solo aparece: moverla descoloca la página. */
+html.aterrizado .nav.entra { animation-name: entrarSinMover; }
+/* El botón fijo entra desde abajo, que es de donde "vive". */
+html.aterrizado .reservar-fijo.entra { animation-name: entrarBoton; }
+
+/* Quien haya pedido menos movimiento no ve nada de esto: aparece y ya. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-fondo { transform: none; filter: none; will-change: auto; }
+  html.aterrizado .hero-fondo { transition: none; }
+  .entra { opacity: 1; }
+  html.aterrizado .entra { animation: none; }
+  #velo { display: none; }
+}
+
+/* Sin JavaScript la clase `aterrizado` no llega nunca: que no se quede
+   la portada en blanco. */
+html:not(.aterrizado) .entra { animation: entrar .01s linear 4s forwards; }
+
+
+/* ==========================================================================
+   DESCENSO DESDE EL ESPACIO
+   ==========================================================================
+
+   Un vídeo de 3,2 s: la Tierra desde 16.000 km y un picado continuo hasta la
+   aérea del camping, con la que encadena.
+
+   Aquí antes había ocho fotos encadenadas con fundidos de CSS. Se tiró entero
+   por dos motivos que no se arreglaban retocando tiempos:
+
+     - Los cortes. Al fundir, la capa que se iba llevaba ya cuatro aumentos y
+       estaba borrosa mientras la que entraba estaba recién nítida. Ese salto
+       de nitidez es lo que se ve como corte, por suave que sea la opacidad.
+     - El planeta plano. Era una foto del satélite EPIC: un disco, no una
+       esfera. No hay CSS que arregle eso.
+
+   El vídeo está renderizado trazando rayos contra una esfera de verdad (ver
+   `scratchpad/vuelo.py`): el horizonte se curva solo, la atmósfera se ve de
+   canto porque se calcula, y la textura es una pirámide de 15 niveles (NASA
+   Blue Marble → Sentinel-2 → ortofoto PNOA) que se mezcla por resolución, así
+   que no hay ni un fundido entre imágenes en todo el recorrido. Lleva además
+   desenfoque de movimiento real, que es lo que hace que la velocidad se lea
+   como velocidad y no como un pase de diapositivas.
+
+   Reglas que respeta (las mismas de antes):
+   - Es un ADORNO. El LCP sigue siendo la aérea del camping y el vídeo ni
+     siquiera se descarga hasta que esa foto está decodificada. Si no está
+     listo a tiempo, el bloque se borra y se entra por el aterrizaje corto.
+   - Se salta con un clic, una tecla, la rueda o el botón.
+   - Se ve una vez por sesión (con ?intro=1 se fuerza).
+   - Con `prefers-reduced-motion`, o con ahorro de datos, no se muestra.
+*/
+
+#espacio {
+  position: fixed; inset: 0; z-index: 10000;
+  background: #01030a;
+  overflow: hidden;
+  contain: layout paint;
+  /* Nace invisible; lo destapa el JS al arrancar el vídeo. */
+  visibility: hidden;
+  opacity: 1;
+  transition: opacity .5s var(--ease);
+}
+html.espacio #espacio { visibility: visible; }
+#espacio.saliendo { opacity: 0; }
+
+#esp-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* Sin esto, en algunos navegadores el primer fotograma parpadea en blanco. */
+  background: #01030a;
+}
+
+/* Botón de saltar: discreto, pero visible desde el primer segundo. */
+.esp-saltar {
+  position: absolute; right: 22px; bottom: 22px; z-index: 3;
+  padding: 9px 16px;
+  font: inherit; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  animation: entrarSinMover .5s 700ms var(--ease) forwards;
+  transition: background .25s, color .25s;
+}
+.esp-saltar:hover { background: rgba(255,255,255,.14); color: #fff; }
+
+/* Atribución: el Sentinel-2 de EOX y el PNOA del IGN son CC BY 4.0 y hay que
+   citarlos donde se usan. La versión con enlaces está en el pie. */
+.esp-credito {
+  position: absolute; left: 22px; bottom: 24px; z-index: 3;
+  margin: 0; max-width: 46ch;
+  font-size: .62rem; line-height: 1.5; letter-spacing: .04em;
+  color: rgba(255,255,255,.42);
+  opacity: 0;
+  animation: entrarSinMover .5s 700ms var(--ease) forwards;
+}
+
+/* El vídeo TERMINA en la aérea del camping, encuadrada igual que el hero.
+   Por eso, cuando el bloque se va, la foto de debajo tiene que estar quieta y
+   sin filtros: cualquier zoom o desenfoque de arranque se vería como un salto
+   justo en el relevo. Solo después arranca una deriva muy suave hacia dentro,
+   que continúa el movimiento del vuelo en vez de reiniciarlo. */
+html.espacio .hero-fondo { transform: none; filter: none; }
+html.espacio.aterrizado .hero-fondo {
+  transform: scale(1.06);
+  filter: none;
+  transition: transform 2600ms cubic-bezier(.16,.7,.2,1);
+}
+/* El velo negro de siempre estorba aquí: ya tapa `#espacio`. */
+html.espacio #velo { display: none; }
+
+@media (max-width: 700px) {
+  .esp-saltar  { right: 14px; bottom: 14px; }
+  .esp-credito { left: 14px; bottom: 16px; max-width: 60vw; font-size: .58rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #espacio { display: none; }
+}
+
+/* ---------- Escena por scroll: fotos encadenadas ----------
+   Sustituye al vídeo que se barría con la rueda. Las fotos van
+   superpuestas y solo cambia cuál está visible, así el navegador no
+   tiene que decodificar nada en cada movimiento. */
+
+.escena-foto {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0;
+  transition: opacity .7s var(--ease), transform 3.5s var(--ease);
+  transform: scale(1.05);
+  z-index: 0;
+}
+.escena-foto.visible { opacity: 1; transform: scale(1); }
+
+/* ---------- Indicador de precarga de la secuencia ----------
+   Los 28 fotogramas pesan 3,5 MB. Mientras llegan se muestra una barra
+   fina; sin ella, el primer barrido va a tirones y parece roto. */
+
+.sec-carga {
+  position: absolute; left: 50%; bottom: 92px; transform: translateX(-50%);
+  z-index: 3; width: min(200px, 40vw); height: 2px;
+  background: rgba(247,243,234,.18);
+  transition: opacity .5s var(--ease);
+}
+.sec-carga::before {
+  content: ""; position: absolute; inset: 0 auto 0 0;
+  width: var(--p, 0%); background: var(--terracota);
+  transition: width .25s linear;
+}
+.sec-carga.fuera { opacity: 0; }
+
+/* ---------- Fotos del recorrido a pie ---------- */
+.foto-dentro { margin: 0; overflow: hidden; border-radius: 10px; aspect-ratio: 4/3; background: var(--arena-media); }
+.foto-dentro img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
+.foto-dentro:hover img { transform: scale(1.05); }

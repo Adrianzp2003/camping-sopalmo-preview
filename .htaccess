@@ -1,0 +1,106 @@
+# =============================================================
+#  Camping Sopalmo — configuración del servidor
+#  Escrito después del incidente del 11/07/2026: varias de estas
+#  reglas existen precisamente para que no se repita.
+# =============================================================
+
+# ---- 1. HTTPS obligatorio ----
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ---- 2. NADA de PHP en carpetas de contenido ----
+# El ataque de julio se apoyó en ficheros .php escondidos entre
+# imágenes y recursos. Aquí no se ejecuta PHP aunque logren subirlo.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(img|css|js|video)/.*\.(php|phtml|php[0-9]|phar|cgi|pl|py|sh)$ - [F,L,NC]
+</IfModule>
+
+# ---- 3. Ficheros que nunca deben servirse ----
+<FilesMatch "\.(sql|log|bak|old|ini|env|pem|p12|pfx|key|sh|ps1|psd|less|md|json|lock|yml|yaml)$">
+    Require all denied
+</FilesMatch>
+
+# Ocultos y metadatos (.git, .env, .htpasswd…)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# La configuración con credenciales, bajo llave
+<FilesMatch "^(config|config\.sample)\.php$">
+    Require all denied
+</FilesMatch>
+
+# ---- 4. La carpeta includes/ no es navegable ----
+# Sus ficheros se incluyen desde PHP; nadie debe pedirlos por URL.
+RedirectMatch 404 ^/includes/.*$
+
+# ---- 5. Sin listados de directorio ----
+Options -Indexes
+<IfModule mod_autoindex.c>
+    IndexIgnore *
+</IfModule>
+
+# ---- 6. Cabeceras de seguridad ----
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+    Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" env=HTTPS
+    # El mapa va en iframe desde openstreetmap.org; el resto, propio.
+    Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src https://www.openstreetmap.org; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+    Header unset X-Powered-By
+</IfModule>
+ServerSignature Off
+
+# ---- 7. Caché de estáticos ----
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg        "access plus 6 months"
+    ExpiresByType image/png         "access plus 6 months"
+    ExpiresByType image/webp        "access plus 6 months"
+    ExpiresByType image/svg+xml     "access plus 6 months"
+    ExpiresByType text/css          "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType application/pdf   "access plus 1 month"
+    ExpiresByType video/mp4         "access plus 6 months"
+    ExpiresByType video/webm        "access plus 6 months"
+    ExpiresDefault                  "access plus 2 days"
+</IfModule>
+
+# El tipo MIME del webm, declarado a mano. El servidor manda
+# `X-Content-Type-Options: nosniff`, así que si sirviera el .webm con el tipo
+# equivocado el navegador se negaría a reproducirlo en vez de adivinarlo.
+<IfModule mod_mime.c>
+    AddType video/webm  .webm
+    AddType video/mp4   .mp4
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+# ---- 8. Páginas de error ----
+ErrorDocument 403 /index.php
+ErrorDocument 404 /index.php
+
+# ---- 9. Codificación ----
+AddDefaultCharset UTF-8
+
+# ---- 10. Sitemap generado ----
+# /sitemap.xml lo sirve sitemap.php, para que no se quede desfasado a mano.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^sitemap\.xml$ sitemap.php [L]
+</IfModule>
+
+# ---- 11. Fotos: caché larga ----
+# Los WebP llevan el ancho en el nombre, asi que si cambia la imagen cambia
+# la URL. Se pueden cachear sin miedo.
+<IfModule mod_expires.c>
+    ExpiresByType image/webp "access plus 1 year"
+</IfModule>
