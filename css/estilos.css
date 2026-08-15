@@ -254,8 +254,11 @@ section { padding: clamp(70px, 10vw, 150px) 0; position: relative; }
 .aloj ul { margin: 1em 0 1.3em; padding: 0; list-style: none; font-size: .92rem; color: rgba(255,253,249,.82); }
 .aloj ul li { padding: 3px 0; }
 .aloj ul li::before { content: "— "; color: var(--terracota-cl); }
-.aloj .pie { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap;
-  border-top: 1px solid rgba(255,253,249,.16); padding-top: 18px; margin-top: 4px; }
+.aloj .pie { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  margin-top: 14px; }
+.aloj .pie .precio-desde { background: rgba(20,21,15,.55); border: 1px solid rgba(255,253,249,.18);
+  border-radius: 12px; padding: 10px 16px; }
+.aloj .pie .boton { margin-left: auto; }
 .precio-desde { font-family: var(--display); font-size: 1.9rem; line-height: 1; }
 .precio-desde small { display: block; font-family: var(--sans); font-size: .68rem; font-weight: 600;
   letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-top: 5px; }
