@@ -9,11 +9,11 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="El Mirador de la Rambla · Camping Sopalmo">
 <meta property="og:description" content="Casa de planta amplia y diáfana, con un dormitorio muy espacioso, terraza a la sombra y salón-cocina abierto. Pensada para una familia.">
-<meta property="og:image" content="https://www.campingsopalmo.com/fotos/mirador/mirador-1-500.webp">
-<link rel="stylesheet" href="css/estilos.css?v=1786547733">
+<meta property="og:image" content="https://www.campingsopalmo.com/fotos/mirador/mirador-2-500.webp">
+<link rel="stylesheet" href="css/estilos.css?v=1786719683">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preload" as="image" href="fotos/mirador/mirador-1-500.webp" fetchpriority="high">
+<link rel="preload" as="image" href="fotos/mirador/mirador-2-500.webp" fetchpriority="high">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -34,14 +34,14 @@
 
 <header class="nav entra" id="nav" style="--paso:5">
   <div class="contenedor-ancho nav-interior">
-    <a href="index.html" class="logo">Camping Sopalmo<span>Mojácar · Almería</span></a>
+    <a href="index.php" class="logo">Camping Sopalmo<span>Mojácar · Almería</span></a>
     <nav>
       <ul class="menu" id="menu">
-        <li><a href="index.html#alojamientos">Alojamientos</a></li>
-        <li><a href="casa-cortijillo.html">El Cortijillo</a></li>
-        <li><a href="casa-mirador.html" class="actual">El Mirador</a></li>
-        <li><a href="index.html#tarifas">Tarifas</a></li>
-        <li><a href="index.html#contacto">Contacto</a></li>
+        <li><a href="index.php#alojamientos">Alojamientos</a></li>
+        <li><a href="casa.php?casa=cortijillo">El Cortijillo</a></li>
+        <li><a href="casa.php?casa=mirador" class="actual">El Mirador</a></li>
+        <li><a href="index.php#tarifas">Tarifas</a></li>
+        <li><a href="index.php#contacto">Contacto</a></li>
         <li><a href="#reservar">Reservar</a></li>
       </ul>
     </nav>
@@ -55,11 +55,11 @@
 <section class="hero hero-casa">
   <div class="hero-media">
     <img id="hero-img" class="hero-fondo"
-         src="fotos/mirador/mirador-1-500.webp" srcset="fotos/mirador/mirador-1-500.webp 500w"
+         src="fotos/mirador/mirador-2-500.webp" srcset="fotos/mirador/mirador-2-500.webp 500w"
          sizes="100vw" alt="Terraza del Mirador con mesa y sillas a la sombra" fetchpriority="high">
   </div>
   <div class="contenedor-ancho">
-    <a href="index.html#alojamientos" class="volver entra" style="--paso:1">&larr; Alojamientos</a>
+    <a href="index.php#alojamientos" class="volver entra" style="--paso:1">&larr; Alojamientos</a>
     <span class="antetitulo entra" style="--paso:2">Casa rural · Sopalmo, Mojácar</span>
     <h1 class="titular-xl entra" style="--paso:3">El Mirador<br>de la Rambla</h1>
     <p class="lema">Un espacio diáfano abierto a la rambla</p>
@@ -126,18 +126,18 @@
     </div>
     <div class="galeria-casa" id="galeria-casa">
             <button class="gc-item revelar" type="button"
-              data-grande="fotos/mirador/mirador-1-1600.webp"
+              data-grande="fotos/mirador/mirador-2-1600.webp"
               data-pie="Terraza del Mirador con mesa y sillas a la sombra" aria-label="Ampliar: Terraza del Mirador con mesa y sillas a la sombra">
-        <img src="fotos/mirador/mirador-1-500.webp" srcset="fotos/mirador/mirador-1-500.webp 500w"
+        <img src="fotos/mirador/mirador-2-500.webp" srcset="fotos/mirador/mirador-2-500.webp 500w"
              sizes="(max-width:700px) 92vw, (max-width:1100px) 46vw, 31vw"
              alt="Terraza del Mirador con mesa y sillas a la sombra" loading="lazy" decoding="async">
       </button>
             <button class="gc-item revelar d1" type="button"
-              data-grande="fotos/mirador/mirador-2-1600.webp"
-              data-pie="Salón comedor con mesa, televisión y sofá" aria-label="Ampliar: Salón comedor con mesa, televisión y sofá">
-        <img src="fotos/mirador/mirador-2-500.webp" srcset="fotos/mirador/mirador-2-500.webp 500w"
+              data-grande="fotos/mirador/mirador-1-1600.webp"
+              data-pie="Salón comedor del Mirador, con la mesa junto a la ventana" aria-label="Ampliar: Salón comedor del Mirador, con la mesa junto a la ventana">
+        <img src="fotos/mirador/mirador-1-500.webp" srcset="fotos/mirador/mirador-1-500.webp 500w"
              sizes="(max-width:700px) 92vw, (max-width:1100px) 46vw, 31vw"
-             alt="Salón comedor con mesa, televisión y sofá" loading="lazy" decoding="async">
+             alt="Salón comedor del Mirador, con la mesa junto a la ventana" loading="lazy" decoding="async">
       </button>
             <button class="gc-item revelar d2" type="button"
               data-grande="fotos/mirador/mirador-3-1600.webp"
@@ -258,7 +258,7 @@
 <!-- ===== LA OTRA CASA ===== -->
 <section class="compacta">
   <div class="contenedor-ancho">
-    <a class="otra-casa revelar" href="casa-cortijillo.html">
+    <a class="otra-casa revelar" href="casa.php?casa=cortijillo">
       <div class="oc-foto"><img src="fotos/cortijillo/cortijillo-00-900.webp" srcset="fotos/cortijillo/cortijillo-00-500.webp 500w, fotos/cortijillo/cortijillo-00-900.webp 900w"
            sizes="(max-width:800px) 92vw, 45vw" alt="Terraza del Cortijillo con mesa y sillas de madera, mirando a la sierra" loading="lazy"></div>
       <div class="oc-texto">
@@ -279,9 +279,9 @@
         <p style="color:var(--gris-claro)">Camping familiar y dos casas rurales en Mojácar, junto al Cabo de Gata.</p>
       </div>
       <div><h4>Alojamientos</h4><ul>
-        <li><a href="index.html#alojamientos">Parcelas</a></li>
-        <li><a href="casa-cortijillo.html">El Cortijillo</a></li>
-        <li><a href="casa-mirador.html">El Mirador de la Rambla</a></li>
+        <li><a href="index.php#alojamientos">Parcelas</a></li>
+        <li><a href="casa.php?casa=cortijillo">El Cortijillo</a></li>
+        <li><a href="casa.php?casa=mirador">El Mirador de la Rambla</a></li>
       </ul></div>
       <div><h4>Contacto</h4><ul>
         <li><a href="tel:+34950478413">950 47 84 13</a></li>
@@ -314,6 +314,6 @@
   <div class="visor-contador" id="visor-contador"></div>
 </div>
 
-<script src="js/app.js?v=1786717670" defer></script>
+<script src="js/app.js?v=1786718782" defer></script>
 </body>
 </html>

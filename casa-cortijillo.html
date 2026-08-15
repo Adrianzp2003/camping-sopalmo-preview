@@ -10,7 +10,7 @@
 <meta property="og:title" content="El Cortijillo · Camping Sopalmo">
 <meta property="og:description" content="Construcción típica de la zona, encalada en blanco, con terraza propia mirando a la Sierra Cabrera. Dos dormitorios, chimenea y cocina completa.">
 <meta property="og:image" content="https://www.campingsopalmo.com/fotos/cortijillo/cortijillo-00-500.webp">
-<link rel="stylesheet" href="css/estilos.css?v=1786547733">
+<link rel="stylesheet" href="css/estilos.css?v=1786719683">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="fotos/cortijillo/cortijillo-00-500.webp" fetchpriority="high">
@@ -34,14 +34,14 @@
 
 <header class="nav entra" id="nav" style="--paso:5">
   <div class="contenedor-ancho nav-interior">
-    <a href="index.html" class="logo">Camping Sopalmo<span>Mojácar · Almería</span></a>
+    <a href="index.php" class="logo">Camping Sopalmo<span>Mojácar · Almería</span></a>
     <nav>
       <ul class="menu" id="menu">
-        <li><a href="index.html#alojamientos">Alojamientos</a></li>
-        <li><a href="casa-cortijillo.html" class="actual">El Cortijillo</a></li>
-        <li><a href="casa-mirador.html">El Mirador</a></li>
-        <li><a href="index.html#tarifas">Tarifas</a></li>
-        <li><a href="index.html#contacto">Contacto</a></li>
+        <li><a href="index.php#alojamientos">Alojamientos</a></li>
+        <li><a href="casa.php?casa=cortijillo" class="actual">El Cortijillo</a></li>
+        <li><a href="casa.php?casa=mirador">El Mirador</a></li>
+        <li><a href="index.php#tarifas">Tarifas</a></li>
+        <li><a href="index.php#contacto">Contacto</a></li>
         <li><a href="#reservar">Reservar</a></li>
       </ul>
     </nav>
@@ -59,7 +59,7 @@
          sizes="100vw" alt="Terraza del Cortijillo con mesa y sillas de madera, mirando a la sierra" fetchpriority="high">
   </div>
   <div class="contenedor-ancho">
-    <a href="index.html#alojamientos" class="volver entra" style="--paso:1">&larr; Alojamientos</a>
+    <a href="index.php#alojamientos" class="volver entra" style="--paso:1">&larr; Alojamientos</a>
     <span class="antetitulo entra" style="--paso:2">Casa rural · Sopalmo, Mojácar</span>
     <h1 class="titular-xl entra" style="--paso:3">El Cortijillo</h1>
     <p class="lema">Una casa encalada con la sierra por delante</p>
@@ -300,8 +300,8 @@
 <!-- ===== LA OTRA CASA ===== -->
 <section class="compacta">
   <div class="contenedor-ancho">
-    <a class="otra-casa revelar" href="casa-mirador.html">
-      <div class="oc-foto"><img src="fotos/mirador/mirador-1-800.webp" srcset="fotos/mirador/mirador-1-500.webp 500w, fotos/mirador/mirador-1-800.webp 800w"
+    <a class="otra-casa revelar" href="casa.php?casa=mirador">
+      <div class="oc-foto"><img src="fotos/mirador/mirador-2-800.webp" srcset="fotos/mirador/mirador-2-500.webp 500w, fotos/mirador/mirador-2-800.webp 800w"
            sizes="(max-width:800px) 92vw, 45vw" alt="Terraza del Mirador con mesa y sillas a la sombra" loading="lazy"></div>
       <div class="oc-texto">
         <span class="antetitulo">La otra casa</span>
@@ -321,9 +321,9 @@
         <p style="color:var(--gris-claro)">Camping familiar y dos casas rurales en Mojácar, junto al Cabo de Gata.</p>
       </div>
       <div><h4>Alojamientos</h4><ul>
-        <li><a href="index.html#alojamientos">Parcelas</a></li>
-        <li><a href="casa-cortijillo.html">El Cortijillo</a></li>
-        <li><a href="casa-mirador.html">El Mirador de la Rambla</a></li>
+        <li><a href="index.php#alojamientos">Parcelas</a></li>
+        <li><a href="casa.php?casa=cortijillo">El Cortijillo</a></li>
+        <li><a href="casa.php?casa=mirador">El Mirador de la Rambla</a></li>
       </ul></div>
       <div><h4>Contacto</h4><ul>
         <li><a href="tel:+34950478413">950 47 84 13</a></li>
@@ -356,6 +356,6 @@
   <div class="visor-contador" id="visor-contador"></div>
 </div>
 
-<script src="js/app.js?v=1786717670" defer></script>
+<script src="js/app.js?v=1786718782" defer></script>
 </body>
 </html>
