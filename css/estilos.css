@@ -263,6 +263,16 @@ section { padding: clamp(70px, 10vw, 150px) 0; position: relative; }
 .precio-desde small { display: block; font-family: var(--sans); font-size: .68rem; font-weight: 600;
   letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-top: 5px; }
 
+/* Listado de alojamientos: filas limpias, sin tarjetas oscuras.
+   Los precios viven en la sección de tarifas, más abajo. */
+.aloj-lista { border-top: 1px solid var(--arena-media); }
+.aloj-fila { display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  flex-wrap: wrap; padding: 30px 0; border-bottom: 1px solid var(--arena-media);
+  text-decoration: none; color: inherit; }
+.aloj-fila h3 { font-family: var(--display); font-size: 1.6rem; margin-bottom: .15em; color: var(--negro); }
+.aloj-fila p { font-size: .95rem; color: var(--gris); margin: 0; max-width: 60ch; }
+.aloj-fila .boton { flex: 0 0 auto; }
+
 /* ---------- SERVICIOS ---------- */
 
 .servicio { padding: 26px 0; border-top: 1px solid var(--arena-media); }
