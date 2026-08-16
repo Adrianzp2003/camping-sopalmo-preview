@@ -83,10 +83,10 @@ function casas_datos(): array
                 'Salón'        => ['Chimenea', 'Televisión', 'Aire acondicionado frío/calor', 'WiFi'],
                 'Exterior'     => ['Terraza cubierta con mesa', 'Zona ajardinada', 'Aparcamiento propio'],
             ],
-            'portada' => 'mirador/mirador-1',
+            'portada' => 'mirador/mirador-2',
             'fotos' => [
-                ['mirador/mirador-1',  'Terraza del Mirador con mesa y sillas a la sombra'],
-                ['mirador/mirador-2',  'Salón comedor con mesa, televisión y sofá'],
+                ['mirador/mirador-2',  'Terraza del Mirador con mesa y sillas a la sombra'],
+                ['mirador/mirador-1',  'Salón comedor del Mirador, con la mesa junto a la ventana'],
                 ['mirador/mirador-3',  'El salón desde el otro extremo, con la mesa junto a la ventana'],
                 ['mirador/mirador-5',  'Cocina equipada con frigorífico, microondas y horno'],
                 ['mirador/mirador-6',  'Dormitorio con cama de matrimonio'],

@@ -84,8 +84,9 @@
       // Quien pide menos movimiento no ve esto (el CSS también lo oculta).
       var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
       if (mq && mq.matches) return false;
-      // Ni quien navega con ahorro de datos o con mala conexión: son ~2 MB,
-      // y esperarlos con la pantalla en negro es peor que no verlos.
+      // Ni quien navega con ahorro de datos o con mala conexión: pesan
+      // varios MB (más con la calidad 1080), y esperarlos con la pantalla
+      // en negro es peor que no verlos.
       var con = navigator.connection;
       if (con && (con.saveData || /^(slow-)?2g$|^3g$/.test(con.effectiveType || ''))) return false;
       // Una vez por visita: repetir el viaje en cada página cansa.
@@ -100,9 +101,10 @@
     /* Qué fichero pedir.
 
        El vídeo es el descenso generado por IA (Veo 3.1) sobre el camping,
-       invertido y acelerado a 4 s. AV1 primero porque pesa menos con la
-       misma calidad, y el de 1080 solo si la pantalla lo aprovecha; si no,
-       el de 720. */
+       invertido y acelerado a 4 s, con upscale Real-ESRGAN x4 a 1080p.
+       AV1 primero porque pesa menos con la misma calidad, y el de 1080
+       solo si la pantalla lo aprovecha; si no, el de 720. El fallback
+       no-AV1 (Safari/iOS) también sube a 1080 en pantallas grandes. */
     fuente: function (v) {
       var ancho = Math.max(window.innerWidth, window.innerHeight) *
                   (window.devicePixelRatio || 1);
@@ -115,9 +117,9 @@
         return 'video/descenso-' + (grande ? '1080' : '720') + '.av1.mp4';
       }
       if (puede('video/webm; codecs="vp9"')) {
-        return 'video/descenso-720.webm';
+        return 'video/descenso-' + (grande ? '1080' : '720') + '.webm';
       }
-      return 'video/descenso-720.mp4';
+      return 'video/descenso-' + (grande ? '1080' : '720') + '.mp4';
     },
 
     marcarVista: function () {
