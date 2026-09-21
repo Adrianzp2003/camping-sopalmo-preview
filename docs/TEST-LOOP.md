@@ -16,9 +16,10 @@ merging to `main` publishes, usually in under a minute.
    python3 -m http.server 8000
    ```
 
-   (`php -S localhost:8000` also works. Requests to `api/*` will
-   fail locally and on Pages — that is the expected honest error
-   state, not a bug.)
+   (`php -S localhost:8000` also works.) The September 2026 preview
+   prepares a WhatsApp/email enquiry in the browser. It does not
+   call PHP APIs or claim live availability. Do not send real enquiries
+   while testing.
 
 2. Open and click through every page, including fragment links:
 
@@ -37,9 +38,12 @@ merging to `main` publishes, usually in under a minute.
    lychee --verbose --no-progress --exclude 'api/*' './**/*.html'
    ```
 
-   The `fetch('api/calcular.php')` POST in `js/app.js` is excluded
-   from link checks: it always fails on Pages by design and shows
-   the honest error state instead.
+   The legacy `api/*` files are not used by the current static preview.
+   Test enquiries at mobile, tablet and desktop widths: valid dates,
+   invalid dates, the two-night house minimum, five-person house limit,
+   changing a prepared enquiry, and preselected accommodation links.
+   Also check mobile navigation, Escape, gallery focus return, and
+   expansion/scrolling of tariff tables.
 
 4. Validate the sitemap parses and lists the five static URLs:
 
@@ -50,6 +54,10 @@ merging to `main` publishes, usually in under a minute.
 5. Push or open the PR. The `Link check` workflow runs lychee on
    every push and pull request and **blocks the merge** on any
    internal 404.
+
+6. Keep every preview HTML page `noindex, nofollow`. Its prices are
+   a dated reference snapshot, not automatically refreshed tariffs.
+   See `REDISENO-2026-09.md` before migrating to the PHP production site.
 
 ## Publish
 
